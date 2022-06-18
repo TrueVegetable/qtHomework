@@ -1,43 +1,77 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+
 #include "mainwindow2.h"
 #include "ui_mainwindow2.h"
+
+#include "mainwindow1_2.h"
+#include "ui_mainwindow1_2.h"
+
+#include "tmpwindow.h"
+#include "ui_tmpwindow.h"
+
+#include "hint.h"
+#include "ui_hint.h"
+
 #include <QKeyEvent>
 #include <QtWidgets>
 #include <random>
 #include <iostream>
+#include <QPainter>
+#include <QFile>
+#include <fstream>
+
+void MainWindow2::paintEvent(QPaintEvent *)
+{
+    QPainter painter(this);
+    QPen pen(QColor(255,0,0));
+    pen.setWidth(3);
+    painter.setPen(pen);
+    painter.drawLine(QPoint(pposx,pposy),QPoint(pposx2,pposy2));
+} //使用arrow时的动画，起点射向终点的一条红线
+
 using std::mt19937;
 mt19937 Rand(time(0));
-const int SHOWWPH=50;//每个武器显示的高度
+const int SHOWWPH=50; //每个武器显示的高度
 MainWindow2::MainWindow2(QWidget *parent) :
     QMainWindow(parent),
-    wphl(nullptr),
-    cmp{},
-    mode(0),
+    wphl(nullptr), //当前选择武器高亮(WeaPon HighLight)
+    cmp{}, //按位置存储生物
+    mode(0), //mode表示当前进行的行动：0:移动，-1:选择武器，1~n:为发射武器，mode选择目标
     mx(0),
-    my(0),
+    my(0), //mx,my:目标指示器，当前所在位置
     ui(new Ui::MainWindow2)
 {
     setMouseTracking(true);//此处不加会导致鼠标在其上时不按鼠标按键时不追踪鼠标移动
     ui->setupUi(this);
-    connect(ui->actionQuit,&QAction::triggered,this,&MainWindow2::Back);//退出按钮
-    CCreature * u=new CCreature(0,0,0,10,4,ui->centralwidget,"D:\\cpp\\qt\\untitled\\bot.png");//自己
+    connect(ui->actionQuit,&QAction::triggered,this,&MainWindow2::Back); //退出按钮
+    connect(ui->actionPause,&QAction::triggered,this,&MainWindow2::option); //弹出tmpwindow
+    connect(ui->actionHints,&QAction::triggered,this,&MainWindow2::hint); //弹出提示框
+
+    ui->actionHints->setIcon(QIcon(":/new/prefix1/question.png")); //菜单栏设置图标
+    ui->actionPause->setIcon(QIcon(":/new/prefix1/pause.png"));
+    ui->actionQuit->setIcon(QIcon(":/new/prefix1/exit.png"));
+
+    setWindowTitle("Welcome to the game. Good luck!");
+
+    CCreature * u=new CCreature(0,0,0,10,4,ui->centralwidget,":/new/prefix1/me.png"); //自己，图源网络
     u->atk.push_back(Attack(0,3,3,"Shoot"));
     u->atk.push_back(Attack(1,2,4,"Bomb"));
-    u->atk.push_back(Attack(2,2,5,"Arrow"));
+    u->atk.push_back(Attack(2,2,5,"Arrow")); //赋予武器
     plax=&(u->posx),play=&(u->posy);
     self=u;
     clist.push_back(u);
     cmp[0][0]=u;
-    for(int i=0;i<7;i++){//生成7个敌人
+    for(int i=0;i<7;i++){ //生成7个敌人
         int px=Rand()%XMX,py=Rand()%YMX;
-        while(cmp[px][py])px=Rand()%XMX,py=Rand()%YMX;
-        CCreature * u=new CCreature(1,px,py,6,2,ui->centralwidget,"D:\\cpp\\qt\\untitled\\man.png");
+        while(cmp[px][py])px=Rand()%XMX,py=Rand()%YMX; //随机生成敌人位置
+        CCreature * u=new CCreature(1,px,py,6,2,ui->centralwidget,":/new/prefix1/Enemy.png"); //图源网络
         clist.push_back(u);
         cmp[px][py]=u;
     }
-    UpdWpList();
+    UpdWpList(); //更新武器显示界面
 }
+
 template<typename T>
 void MainWindow2::trace(int fx,int fy,int tx,int ty,T act){
     int cx=fx,cy=fy;
@@ -64,11 +98,11 @@ void MainWindow2::UpdWpList(int ch){
 
     for(int i=0;i<showwp.size();i++)delete showwp[i];
     showwp.clear();
-    if(wphl)delete wphl,wphl=nullptr;//清除原有显示
+    if(wphl)delete wphl,wphl=nullptr; //清除原有显示
     if(ch==-1){
-        wphl=new QLabel(ui->centralwidget);//指示可选攻击
+        wphl=new QLabel(ui->centralwidget); //指示可选攻击
         wphl->setGeometry(1000,0,200,SHOWWPH*self->atk.size());
-        wphl->setStyleSheet("background-color: rgba(127, 127, 127, 20);");//灰色
+        wphl->setStyleSheet("background-color: rgba(127, 127, 127, 20);"); //灰色
         wphl->show();
     }
     for(int i=0;i<self->atk.size();i++){
@@ -76,22 +110,22 @@ void MainWindow2::UpdWpList(int ch){
         nlabel->setGeometry(1000,SHOWWPH*i,200,SHOWWPH);
         nlabel->setText(QString::fromStdString(std::to_string(i+1)+" "+self->atk[i].name));
         nlabel->show();
-        showwp.push_back(nlabel);//显示当前可用武器
+        showwp.push_back(nlabel); //显示当前可用武器
         if(i==ch-1){
-            wphl=new QLabel(ui->centralwidget);//指示当前选中攻击
+            wphl=new QLabel(ui->centralwidget); //指示当前选中攻击
             wphl->setGeometry(1000,50*i,200,50);
-            wphl->setStyleSheet("background-color: rgba(0, 0, 255, 20);");//蓝色
+            wphl->setStyleSheet("background-color: rgba(0, 0, 255, 20);"); //蓝色
             wphl->show();
         }
     }
 }
 void MainWindow2::Back(){
-    MainWindow * w=new MainWindow;
+    MainWindow1_2 * w=new MainWindow1_2;
     w->show();
     delete this;
 }
 bool MainWindow2::checkDie(int nx,int ny){
-    if(cmp[nx][ny]->hp<=0){//如死亡则删除
+    if(cmp[nx][ny]->hp<=0){ //如死亡则删除
         auto dd=cmp[nx][ny];
         delete dd;
         for(int i=0;i<clist.size();i++)
@@ -105,7 +139,7 @@ bool MainWindow2::checkDie(int nx,int ny){
     return false;
 }
 bool MainWindow2::checkDie(CCreature * & tar){
-    if(tar->hp<=0){//如死亡则删除
+    if(tar->hp<=0){ //如死亡则删除
         delete tar;
         for(int i=0;i<clist.size();i++)
             if(tar==clist[i]){
@@ -118,16 +152,16 @@ bool MainWindow2::checkDie(CCreature * & tar){
     return false;
 }
 void MainWindow2::Move(int dir){
-    if(dir==N){//原地不动
+    if(dir==N){ //原地不动
         Upd_All();return;
     }
     int bx=self->posx,by=self->posy;
     int nx=bx+dx[dir],ny=by+dy[dir];
     if(!In(nx,ny))return;
-    if(cmp[nx][ny]){//移动目标有敌人则近身攻击
+    if(cmp[nx][ny]){ //移动目标有敌人则近身攻击
         self->Attack(cmp[nx][ny]);
         checkDie(nx,ny);
-    }//否则移动
+    } //否则移动
     else{
         self->Move(nx,ny);
         cmp[nx][ny]=cmp[bx][by];
@@ -174,12 +208,12 @@ bool MainWindow2::Upd_All(){
     UpdWpList();
     for(int i=0;i<clist.size();i++)clist[i]->upd();
     if(clist.size()==1){//敌人全部死亡，成功
-        QMessageBox::warning(this, tr("tql"), tr("tql"));
+        QMessageBox::warning(this, tr("Congratulations! You win."), tr("Congratulations! You win."));
         Back();
         return true;
     }
     if(self->hp<=0){//玩家血量<=0，失败
-        QMessageBox::warning( this, tr("wbhqt"), tr("wbhqt"));
+        QMessageBox::warning( this, tr("I am sorry, you fail."), tr("I am sorry, you fail."));
         Back();
         return true;
     }
@@ -295,3 +329,89 @@ MainWindow2::~MainWindow2()
     delete wphl;
     delete ui;
 }
+
+void MainWindow2::option()
+{
+    TmpWindow *twindow = new TmpWindow(nullptr,this);
+    twindow->show();
+} //点击pause，弹出中转界面
+
+void MainWindow2::hint()
+{
+    Hint *hin = new Hint;
+    hin->show();
+}
+
+bool MainWindow2::save_archive(int num){
+    // 写文件
+    if (num==1){
+        std::ifstream inFile("saving1.txt",std::ios::in);
+        if(inFile.is_open()){
+            inFile.close();
+            return false;
+        } else {
+            std::ofstream outFile("saving1.txt",std::ios::out);
+            outFile<<self->id<<" "<<self->posx<<" "<<self->posy<<" "<<self->mhp<<" "
+                                  <<self->hp<<" "<<self->mAtk<<std::endl;
+            outFile<<clist.size()<<std::endl;
+            for(int i=1;i<clist.size();i++){
+                outFile<<clist[i]->id<<" "<<clist[i]->posx<<" "<<clist[i]->posy<<" "<<clist[i]->mhp<<" "
+                      <<clist[i]->hp<<" "<<clist[i]->mAtk<<std::endl;
+            }
+
+//           for(int i=0;i<TSizeX;i++){
+//                for(int j=0;j<TSizeY;j++){
+//                    if(!cmp[i][j]){
+//                        outFile<<0<<std::endl;
+//                        continue;
+//                    }
+//                    outFile<<1<<" "<<cmp[i][j]->id<<" "<<cmp[i][j]->posx<<" "<<cmp[i][j]->posy<<" "<<cmp[i][j]->mhp<<" "
+//                          <<cmp[i][j]->hp<<" "<<cmp[i][j]->mAtk<<std::endl;
+//                }
+//            }
+            outFile<<mode<<" "<<mx<<" "<<my<<std::endl;
+            outFile.close();
+            return true;
+        }
+    } else if(num==2){
+        std::ifstream inFile("saving2.txt",std::ios::in);
+        if(inFile.is_open()){
+            inFile.close();
+            return false;
+        } else {
+            std::ofstream outFile("saving2.txt",std::ios::out);
+            outFile<<self->id<<" "<<self->posx<<" "<<self->posy<<" "<<self->mhp<<" "
+                                  <<self->hp<<" "<<self->mAtk<<std::endl;
+            outFile<<clist.size()<<std::endl;
+            for(int i=1;i<clist.size();i++){
+                outFile<<clist[i]->id<<" "<<clist[i]->posx<<" "<<clist[i]->posy<<" "<<clist[i]->mhp<<" "
+                      <<clist[i]->hp<<" "<<clist[i]->mAtk<<std::endl;
+            }
+
+//           for(int i=0;i<TSizeX;i++){
+//                for(int j=0;j<TSizeY;j++){
+//                    if(!cmp[i][j]){
+//                        outFile<<0<<std::endl;
+//                        continue;
+//                    }
+//                    outFile<<1<<" "<<cmp[i][j]->id<<" "<<cmp[i][j]->posx<<" "<<cmp[i][j]->posy<<" "<<cmp[i][j]->mhp<<" "
+//                          <<cmp[i][j]->hp<<" "<<cmp[i][j]->mAtk<<std::endl;
+//                }
+//            }
+            outFile<<mode<<" "<<mx<<" "<<my<<std::endl;
+            outFile.close();
+            return true;
+        }
+    }else {
+        return false;
+    }
+    return false;
+}
+
+/* 存储格式：.txt
+ * row1: self ( in sequence: int Id,int px,int py,int mhp,int hp,int mATK )
+ * row2: size of clist - n
+ * row3-(n+1): a creature in clist per row EXCEPT SELF ( in sequence: int Id,int px,int py,int mhp,int hp,int mATK )
+ * row(n+2): mode, mx, my in sequence
+ * !!!different numbers in one row will be separated by a whitespace
+ */

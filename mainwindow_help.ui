@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow_help</class>
+ <widget class="QMainWindow" name="MainWindow_help">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>800</width>
+    <height>600</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>MainWindow</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <widget class="QTextBrowser" name="textBrowser">
+    <property name="geometry">
+     <rect>
+      <x>40</x>
+      <y>20</y>
+      <width>721</width>
+      <height>531</height>
+     </rect>
+    </property>
+    <property name="html">
+     <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;meta charset=&quot;utf-8&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Microsoft YaHei UI'; font-size:9pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p align=&quot;center&quot; style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'微软雅黑','sans-serif'; font-size:12pt; font-weight:700;&quot;&gt;你说什么都队 QT大作业 功能设计文档&lt;/span&gt;&lt;span style=&quot; font-weight:700;&quot;&gt; &lt;/span&gt;&lt;/p&gt;
+&lt;p align=&quot;center&quot; style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'微软雅黑','sans-serif';&quot;&gt; &lt;/span&gt; &lt;/p&gt;
+&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'微软雅黑','sans-serif'; font-size:12pt; font-weight:700;&quot;&gt;设计背景与主要机制：&lt;/span&gt; &lt;/p&gt;
+&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'微软雅黑','sans-serif'; font-size:12pt;&quot;&gt;      &lt;/span&gt;&lt;span style=&quot; font-family:'微软雅黑','sans-serif';&quot;&gt;本作业设计灵感来源于steam游戏rift wizard。具体功能为，在有多个小方格组成的地图上放置代表我方的“初始法师”，同时在地图相对随机的其他若干位置放置若干“敌人”。游戏采取回合制，每一回合我方可以选择移动（向临近可行单位格），或攻击（对技能范围内的敌方产生伤害），每回合我方操作后所有敌方也会根据一定策略进行移动或者攻击（根据敌人种类而异，敌人种类数会在后续视情况增减）。我方法师和敌人都具备一定血量，若我方在血量未尽的情况下消灭所有敌人则我方胜利，反之我方血量已尽时仍有敌人未被消灭则我方失败。&lt;/span&gt; &lt;/p&gt;
+&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'微软雅黑','sans-serif'; font-size:12pt; font-weight:700;&quot;&gt;基本界面与功能实现：&lt;/span&gt; &lt;/p&gt;
+&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'微软雅黑','sans-serif'; font-size:12pt;&quot;&gt;      &lt;/span&gt;&lt;span style=&quot; font-family:'微软雅黑','sans-serif';&quot;&gt;最终呈现的可视化作业应包括：登录界面（包括账号密码），开始游戏界面（包括新游戏、读取存档、帮助和退出），选择难度界面（在新游戏之后，存档的游戏同时保存了难度参数），帮助界面（一些游戏的基本操作提示）和正式游戏界面（包括实时地图和信息面板）。&lt;/span&gt; &lt;/p&gt;
+&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'微软雅黑','sans-serif';&quot;&gt;       本游戏支持我方法师具备多种技能且用键盘实现技能选择，用鼠标确定攻击目标格（不同技能会根据目标格和相应算法对特定范围内的敌方实施伤害），用键盘控制移动。同时本游戏支持玩家选择初始难度，并默认在初始难度选择后，每一局游戏通过后会进行难度升级。此外，本游戏还支持游戏过程中的实时存档、本地读档。&lt;/span&gt; &lt;/p&gt;
+&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'微软雅黑','sans-serif'; font-size:12pt; font-weight:700;&quot;&gt;其他优化：&lt;/span&gt; &lt;/p&gt;
+&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'微软雅黑','sans-serif'; font-size:12pt;&quot;&gt;      &lt;/span&gt;&lt;span style=&quot; font-family:'微软雅黑','sans-serif';&quot;&gt;为了提升玩家体验，我们在上述基本框架的基础上对游戏做了如下优化，提升其丰富性：&lt;/span&gt; &lt;/p&gt;
+&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'微软雅黑','sans-serif';&quot;&gt;1. 地图多样性：与难度挂钩+一定随机性，主要是方格（可行单元格）布局不同。&lt;/span&gt; &lt;/p&gt;
+&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'微软雅黑','sans-serif';&quot;&gt;2. 技能多样性：攻击力，攻击范围（如贴身攻击，远程直线攻击，范围攻击）等不同。&lt;/span&gt; &lt;/p&gt;
+&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'微软雅黑','sans-serif';&quot;&gt;3. 难度升级：体现在我的血量和技能、敌人数量、敌人初始布局、敌人种类等方面。&lt;/span&gt; &lt;/p&gt;
+&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'微软雅黑','sans-serif';&quot;&gt;4. 敌人种类多样性：体现在外观、血量、技能等方面。&lt;/span&gt; &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+    </property>
+   </widget>
+  </widget>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>800</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menuHelp">
+    <property name="title">
+     <string>Help</string>
+    </property>
+   </widget>
+   <addaction name="menuHelp"/>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

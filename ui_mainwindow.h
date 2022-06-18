@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'mainwindow.ui'
 **
-** Created by: Qt User Interface Compiler version 6.3.0
+** Created by: Qt User Interface Compiler version 5.9.7
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
 ********************************************************************************/
@@ -10,13 +10,15 @@
 #define UI_MAINWINDOW_H
 
 #include <QtCore/QVariant>
+#include <QtGui/QAction>
 #include <QtWidgets/QApplication>
-#include <QtWidgets/QGridLayout>
+#include <QtWidgets/QButtonGroup>
+#include <QtWidgets/QHeaderView>
 #include <QtWidgets/QLineEdit>
 #include <QtWidgets/QMainWindow>
+#include <QtWidgets/QMenu>
 #include <QtWidgets/QMenuBar>
 #include <QtWidgets/QPushButton>
-#include <QtWidgets/QSpacerItem>
 #include <QtWidgets/QStatusBar>
 #include <QtWidgets/QWidget>
 
@@ -26,53 +28,52 @@ class Ui_MainWindow
 {
 public:
     QWidget *centralwidget;
-    QGridLayout *gridLayout;
-    QLineEdit *lineEdit;
-    QSpacerItem *horizontalSpacer;
-    QPushButton *pushButton;
-    QSpacerItem *horizontalSpacer_4;
-    QSpacerItem *horizontalSpacer_3;
     QPushButton *pushButton_2;
+    QLineEdit *lineEdit;
+    QPushButton *pushButton;
+    QPushButton *pushButton_3;
     QMenuBar *menubar;
+    QMenu *menuOptions;
     QStatusBar *statusbar;
 
     void setupUi(QMainWindow *MainWindow)
     {
         if (MainWindow->objectName().isEmpty())
-            MainWindow->setObjectName(QString::fromUtf8("MainWindow"));
+            MainWindow->setObjectName(QStringLiteral("MainWindow"));
         MainWindow->setEnabled(true);
-        MainWindow->resize(1366, 768);
+        MainWindow->resize(800, 600);
         QSizePolicy sizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum);
         sizePolicy.setHorizontalStretch(0);
         sizePolicy.setVerticalStretch(0);
         sizePolicy.setHeightForWidth(MainWindow->sizePolicy().hasHeightForWidth());
         MainWindow->setSizePolicy(sizePolicy);
-        MainWindow->setMinimumSize(QSize(1366, 768));
-        MainWindow->setMaximumSize(QSize(1366, 768));
+        MainWindow->setMinimumSize(QSize(100, 100));
+        MainWindow->setMaximumSize(QSize(800, 600));
         QPalette palette;
-        QBrush brush(QColor(255, 255, 255, 255));
-        brush.setStyle(Qt::SolidPattern);
-        palette.setBrush(QPalette::Active, QPalette::Window, brush);
-        QBrush brush1(QColor(240, 240, 240, 255));
-        brush1.setStyle(Qt::SolidPattern);
-        palette.setBrush(QPalette::Inactive, QPalette::Window, brush1);
-        palette.setBrush(QPalette::Disabled, QPalette::Window, brush);
         MainWindow->setPalette(palette);
+        MainWindow->setStyleSheet(QStringLiteral("#MainWindow{border-image: url(:/new/prefix1/image1.png);}"));
         centralwidget = new QWidget(MainWindow);
-        centralwidget->setObjectName(QString::fromUtf8("centralwidget"));
-        gridLayout = new QGridLayout(centralwidget);
-        gridLayout->setObjectName(QString::fromUtf8("gridLayout"));
+        centralwidget->setObjectName(QStringLiteral("centralwidget"));
+        pushButton_2 = new QPushButton(centralwidget);
+        pushButton_2->setObjectName(QStringLiteral("pushButton_2"));
+        pushButton_2->setGeometry(QRect(550, 340, 131, 71));
+        sizePolicy.setHeightForWidth(pushButton_2->sizePolicy().hasHeightForWidth());
+        pushButton_2->setSizePolicy(sizePolicy);
+        QFont font;
+        font.setPointSize(16);
+        pushButton_2->setFont(font);
         lineEdit = new QLineEdit(centralwidget);
-        lineEdit->setObjectName(QString::fromUtf8("lineEdit"));
+        lineEdit->setObjectName(QStringLiteral("lineEdit"));
         lineEdit->setEnabled(true);
+        lineEdit->setGeometry(QRect(210, 170, 388, 63));
         QSizePolicy sizePolicy1(QSizePolicy::Ignored, QSizePolicy::Maximum);
         sizePolicy1.setHorizontalStretch(0);
         sizePolicy1.setVerticalStretch(0);
         sizePolicy1.setHeightForWidth(lineEdit->sizePolicy().hasHeightForWidth());
         lineEdit->setSizePolicy(sizePolicy1);
-        QFont font;
-        font.setPointSize(36);
-        lineEdit->setFont(font);
+        QFont font1;
+        font1.setPointSize(36);
+        lineEdit->setFont(font1);
         lineEdit->setAcceptDrops(false);
         lineEdit->setLayoutDirection(Qt::LeftToRight);
         lineEdit->setAutoFillBackground(false);
@@ -80,43 +81,31 @@ public:
         lineEdit->setAlignment(Qt::AlignCenter);
         lineEdit->setReadOnly(true);
         lineEdit->setClearButtonEnabled(false);
-
-        gridLayout->addWidget(lineEdit, 0, 2, 1, 1);
-
-        horizontalSpacer = new QSpacerItem(40, 20, QSizePolicy::MinimumExpanding, QSizePolicy::Minimum);
-
-        gridLayout->addItem(horizontalSpacer, 1, 2, 1, 1);
-
         pushButton = new QPushButton(centralwidget);
-        pushButton->setObjectName(QString::fromUtf8("pushButton"));
+        pushButton->setObjectName(QStringLiteral("pushButton"));
+        pushButton->setGeometry(QRect(320, 340, 151, 71));
         sizePolicy.setHeightForWidth(pushButton->sizePolicy().hasHeightForWidth());
         pushButton->setSizePolicy(sizePolicy);
-
-        gridLayout->addWidget(pushButton, 1, 1, 1, 1);
-
-        horizontalSpacer_4 = new QSpacerItem(40, 20, QSizePolicy::MinimumExpanding, QSizePolicy::Minimum);
-
-        gridLayout->addItem(horizontalSpacer_4, 1, 4, 1, 1);
-
-        horizontalSpacer_3 = new QSpacerItem(40, 20, QSizePolicy::MinimumExpanding, QSizePolicy::Minimum);
-
-        gridLayout->addItem(horizontalSpacer_3, 1, 0, 1, 1);
-
-        pushButton_2 = new QPushButton(centralwidget);
-        pushButton_2->setObjectName(QString::fromUtf8("pushButton_2"));
-        sizePolicy.setHeightForWidth(pushButton_2->sizePolicy().hasHeightForWidth());
-        pushButton_2->setSizePolicy(sizePolicy);
-
-        gridLayout->addWidget(pushButton_2, 1, 3, 1, 1);
-
+        pushButton->setFont(font);
+        pushButton_3 = new QPushButton(centralwidget);
+        pushButton_3->setObjectName(QStringLiteral("pushButton_3"));
+        pushButton_3->setGeometry(QRect(90, 340, 141, 71));
+        sizePolicy.setHeightForWidth(pushButton_3->sizePolicy().hasHeightForWidth());
+        pushButton_3->setSizePolicy(sizePolicy);
+        pushButton_3->setFont(font);
         MainWindow->setCentralWidget(centralwidget);
         menubar = new QMenuBar(MainWindow);
-        menubar->setObjectName(QString::fromUtf8("menubar"));
-        menubar->setGeometry(QRect(0, 0, 1366, 17));
+        menubar->setObjectName(QStringLiteral("menubar"));
+        menubar->setGeometry(QRect(0, 0, 800, 21));
+        menuOptions = new QMenu(menubar);
+        menuOptions->setObjectName(QStringLiteral("menuOptions"));
         MainWindow->setMenuBar(menubar);
         statusbar = new QStatusBar(MainWindow);
-        statusbar->setObjectName(QString::fromUtf8("statusbar"));
+        statusbar->setObjectName(QStringLiteral("statusbar"));
         MainWindow->setStatusBar(statusbar);
+
+        menubar->addAction(menuOptions->menuAction());
+        menuOptions->addSeparator();
 
         retranslateUi(MainWindow);
 
@@ -125,10 +114,12 @@ public:
 
     void retranslateUi(QMainWindow *MainWindow)
     {
-        MainWindow->setWindowTitle(QCoreApplication::translate("MainWindow", "MainWindow", nullptr));
-        lineEdit->setText(QCoreApplication::translate("MainWindow", "qtmdqt", nullptr));
-        pushButton->setText(QCoreApplication::translate("MainWindow", "Start", nullptr));
-        pushButton_2->setText(QCoreApplication::translate("MainWindow", "Quit", nullptr));
+        MainWindow->setWindowTitle(QApplication::translate("MainWindow", "MainWindow", Q_NULLPTR));
+        pushButton_2->setText(QApplication::translate("MainWindow", "Quit", Q_NULLPTR));
+        lineEdit->setText(QApplication::translate("MainWindow", "Hit That Guy", Q_NULLPTR));
+        pushButton->setText(QApplication::translate("MainWindow", "Start", Q_NULLPTR));
+        pushButton_3->setText(QApplication::translate("MainWindow", "Help", Q_NULLPTR));
+        menuOptions->setTitle(QApplication::translate("MainWindow", "Options", Q_NULLPTR));
     } // retranslateUi
 
 };

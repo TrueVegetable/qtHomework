@@ -12,12 +12,13 @@ class MainWindow : public QMainWindow
 {
     Q_OBJECT
 
-public:
-    MainWindow(QWidget *parent = nullptr);
-    ~MainWindow();
-    void NewWindow();
-    void Quit();
-private:
-    Ui::MainWindow *ui;
+    public:
+        MainWindow(QWidget *parent = nullptr);
+        ~MainWindow();
+        void NewWindow();
+        void Quit();
+        void ShowHelp();
+    private:
+        Ui::MainWindow *ui;
 };
 #endif // MAINWINDOW_H

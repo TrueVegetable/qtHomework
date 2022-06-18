@@ -1,3 +1,16 @@
-增加两种武器：
-bomb：3x3范围伤害
-arrow：直线范围伤害
+加了基础动画，background、人物形象和图标等；
+规范了一下资源文件，不用改根文件夹了，全都放进qt工程里了；
+写了远程攻击的画线动画，但还没有加入，现在放在mainwindow2.cpp的开头；
+增加了tmpwindow界面，点击mainwindow2界面的Options下的Pause就会弹出；
+增加了提示界面，在mainwindow2的option下的hints里，会弹出；
+增加了士兵种类Archer和Demoman，在CCreature.h下面，还没加实现；
+加全了注释；
+其他一些细节的名称改变和操作规范。
+
+
+update more：
+1. 第一个菜单的help界面放入了游戏文档（mainwindow_help.h)
+2. 第一个菜单start后设置了登录界面（目前唯一账号：cxj，密码：handsome）(login.h)
+3. 登录成功后选择是否读取存档还是新游戏 (mainwindow1_2.h)
+4. 游戏过程中的pause里面可以选择存档并退出
+#但是现在读存档还有点问题

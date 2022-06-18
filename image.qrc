@@ -1,0 +1,15 @@
+<RCC>
+    <qresource prefix="/new/prefix1">
+        <file>image1.png</file>
+        <file>image2.png</file>
+        <file>Enemy.png</file>
+        <file>image3.png</file>
+        <file>image4.png</file>
+        <file>me.png</file>
+        <file>people.png</file>
+        <file>people2.png</file>
+        <file>question.png</file>
+        <file>exit.png</file>
+        <file>pause.png</file>
+    </qresource>
+</RCC>

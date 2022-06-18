@@ -12,7 +12,6 @@
 #include <QtCore/QVariant>
 #include <QtGui/QAction>
 #include <QtWidgets/QApplication>
-#include <QtWidgets/QLabel>
 #include <QtWidgets/QMainWindow>
 #include <QtWidgets/QMenu>
 #include <QtWidgets/QMenuBar>
@@ -24,10 +23,10 @@ QT_BEGIN_NAMESPACE
 class Ui_MainWindow2
 {
 public:
-    QAction *actionSave;
+    QAction *actionPause;
     QAction *actionQuit;
+    QAction *actionHints;
     QWidget *centralwidget;
-
     QMenuBar *menubar;
     QMenu *menuFile;
     QStatusBar *statusbar;
@@ -39,17 +38,21 @@ public:
         MainWindow2->resize(1366, 768);
         MainWindow2->setMinimumSize(QSize(1366, 768));
         MainWindow2->setMaximumSize(QSize(1366, 768));
-        actionSave = new QAction(MainWindow2);
-        actionSave->setObjectName(QString::fromUtf8("actionSave"));
+        MainWindow2->setStyleSheet(QString::fromUtf8("#MainWindow2{border-image: url(:/new/prefix1/image3.png);}"));
+        MainWindow2->setMouseTracking(true);
+        actionPause = new QAction(MainWindow2);
+        actionPause->setObjectName(QString::fromUtf8("actionPause"));
         actionQuit = new QAction(MainWindow2);
         actionQuit->setObjectName(QString::fromUtf8("actionQuit"));
+        actionHints = new QAction(MainWindow2);
+        actionHints->setObjectName(QString::fromUtf8("actionHints"));
         centralwidget = new QWidget(MainWindow2);
         centralwidget->setObjectName(QString::fromUtf8("centralwidget"));
-        centralwidget->setMouseTracking(true);
+        centralwidget->setMouseTracking(true);//不加无法追踪鼠标
         MainWindow2->setCentralWidget(centralwidget);
         menubar = new QMenuBar(MainWindow2);
         menubar->setObjectName(QString::fromUtf8("menubar"));
-        menubar->setGeometry(QRect(0, 0, 1366, 20));
+        menubar->setGeometry(QRect(0, 0, 1366, 26));
         menuFile = new QMenu(menubar);
         menuFile->setObjectName(QString::fromUtf8("menuFile"));
         MainWindow2->setMenuBar(menubar);
@@ -58,7 +61,8 @@ public:
         MainWindow2->setStatusBar(statusbar);
 
         menubar->addAction(menuFile->menuAction());
-        menuFile->addAction(actionSave);
+        menuFile->addAction(actionHints);
+        menuFile->addAction(actionPause);
         menuFile->addAction(actionQuit);
 
         retranslateUi(MainWindow2);
@@ -69,9 +73,10 @@ public:
     void retranslateUi(QMainWindow *MainWindow2)
     {
         MainWindow2->setWindowTitle(QCoreApplication::translate("MainWindow2", "MainWindow", nullptr));
-        actionSave->setText(QCoreApplication::translate("MainWindow2", "Save", nullptr));
+        actionPause->setText(QCoreApplication::translate("MainWindow2", "Pause", nullptr));
         actionQuit->setText(QCoreApplication::translate("MainWindow2", "Quit", nullptr));
-        menuFile->setTitle(QCoreApplication::translate("MainWindow2", "File", nullptr));
+        actionHints->setText(QCoreApplication::translate("MainWindow2", "Hints", nullptr));
+        menuFile->setTitle(QCoreApplication::translate("MainWindow2", "Options", nullptr));
     } // retranslateUi
 
 };
