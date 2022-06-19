@@ -70,7 +70,7 @@ MainWindow2::MainWindow2(int level,QWidget *parent) :
         clist.push_back(u);
         cmp[px][py]=u;
     }
-    sta=new QLabel(ui->centralwidget);
+    sta=new QLabel(ui->centralwidget);//显示玩家状态
     sta->setGeometry(SHOWWPX,SHOWWPY,SHOWWPW,SHOWWPH);
     sta->show();
     UpdWpList(); //更新武器显示界面
@@ -121,7 +121,7 @@ void MainWindow2::UpdWpList(int ch){
         auto txt=std::to_string(i+1)+" "+self->atk[i].name+" ATK:"+std::to_string(self->atk[i].atk)+" R:"+std::to_string(self->atk[i].r)+" CD:"+std::to_string(self->atk[i].curcd)+"/"+std::to_string(self->atk[i].cd-1);
         nlabel->setText(QString::fromStdString(txt));
         nlabel->show();
-        showwp.push_back(nlabel); //显示当前可用武器
+        showwp.push_back(nlabel); //显示当前拥有武器
         if(i==ch-1){
             wphl=new QLabel(ui->centralwidget); //指示当前选中攻击
             wphl->setGeometry(SHOWWPX,SHOWWPY+SHOWWPH*(i+1),SHOWWPW,SHOWWPH);
@@ -222,7 +222,7 @@ void MainWindow2::Upd_E(){
 }
 bool MainWindow2::Upd_All(){
     Upd_E();
-    for(auto &x:self->atk)if(x.curcd)--x.curcd;
+    for(auto &x:self->atk)if(x.curcd)--x.curcd;//冷却时间更新
     UpdWpList();
     for(int i=0;i<clist.size();i++)clist[i]->upd();
     if(clist.size()==1){//敌人全部死亡，成功
@@ -277,7 +277,7 @@ void MainWindow2::keyPressEvent(QKeyEvent *k){
         case Qt::Key_Escape:ch=-1;break;
         }
            if(ch>=0){
-               if(self->atk[ch-1].curcd>0){
+               if(self->atk[ch-1].curcd>0){//选取的武器正在冷却
                    QMessageBox::warning(this, tr("Weapon in cooldown"), tr(("You cannot use the weapon "+self->atk[ch-1].name+" now. It is still in cooldown.").c_str()));
                    mode=0;UpdWpList();
                }
@@ -351,6 +351,7 @@ MainWindow2::~MainWindow2()
     for(auto &x:showr)delete x;
     for(auto &x:showwp)delete x;
     for(auto &x:showaoe)delete x;
+	for(auto &x:showava)delete x;
     delete sta;
     delete wphl;
     delete ui;
