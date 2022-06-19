@@ -15,9 +15,9 @@ int getDir(int x,int y,int tx,int ty); //(x,y)到(tx,ty)的方向
 class CCreature;
 class Attack{ //攻击类
 public:
-    int id,atk,r; //种类，攻击力，范围
+    int id,atk,r,cd,curcd; //种类，攻击力，范围,冷却时间，当前冷却时间
     string name; //名字
-    Attack(int Id, int atk, int r, string name);
+    Attack(int Id, int atk, int r, string name,int CD);
     bool InRange(int x,int y,int tx,int ty); //(x,y)是否在从(fx,fy)发射的攻击击中(tx,ty)的伤害范围内
     void hit(CCreature * & tar); //击中tar的效果
 };
@@ -29,10 +29,10 @@ public:
     vector<Attack> atk; //当前可用的攻击列表
     CCreature(int id,int px,int py,int HP,int mATK,QWidget *parent,string Path);
     void Move(int nx,int ny); //移动到(nx,ny)
-    void rAtk(CCreature * & tar,Attack A); //该生物使用攻击A远程攻击生物tar
+    void rAtk(CCreature * & tar,Attack & A); //该生物使用攻击A远程攻击生物tar
     void upd(); //更新状态（目前只有血条）
     bool Attack(CCreature * target); //近身攻击target
-    int FindPath(int x = *plax,int y = *play); //用bfs找到当前到(x,y)的路线，返回当前该走的方向
+    int FindPath(CCreature * mp[XMX][YMX],int x = *plax,int y = *play); //用bfs找到当前到(x,y)的路线，返回当前该走的方向
     ~CCreature();
 };
 

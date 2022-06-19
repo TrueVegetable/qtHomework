@@ -3,7 +3,8 @@
 #include <string>
 #include <cmath>
 #include <queue>
-#include<algorithm>
+#include <algorithm>
+#include <random>
 using std::abs;
 typedef std::pair<int,int> pii;
 int * plax=nullptr, * play=nullptr; //玩家、敌人
@@ -33,7 +34,7 @@ int getDir(int x,int y,int tx,int ty){
 
 } //direction
 
-Attack::Attack(int Id,int Atk,int R,string Name):id(Id),atk(Atk),r(R),name(Name){
+Attack::Attack(int Id,int Atk,int R,string Name,int CD):id(Id),atk(Atk),r(R),cd(CD),curcd(0),name(Name){
 
 }
 bool Attack::InRange(int x,int y,int tx,int ty){
@@ -67,7 +68,7 @@ void Attack::hit(CCreature * & tar){
     tar->hp-=atk;
 }
 
-void CCreature::rAtk(CCreature * & tar,class Attack A){
+void CCreature::rAtk(CCreature * & tar,class Attack & A){
     A.hit(tar);
 }
 CCreature::CCreature(int Id,int px,int py,int HP,int mATK,QWidget *parent,std::string Path){
@@ -110,7 +111,7 @@ struct cord{
     }
     cord(int a,int b,int c,int d):x(a),y(b),v(c),fm(d){}
 }; //表示坐标
-int CCreature::FindPath(int x,int y){
+int CCreature::FindPath(CCreature * mp[XMX][YMX],int x,int y){
       int vis[XMX][YMX];
       memset(vis,0,sizeof(vis));
       std::queue<cord> q;
@@ -118,14 +119,14 @@ int CCreature::FindPath(int x,int y){
       for(int i=0;i<8;i++){
           int nx=posx+dx[i],ny=posy+dy[i];
           if(nx==x&&ny==y)return i;
-          if(In(nx,ny))q.push(cord(nx,ny,1,i)),vis[nx][ny]=1;
+          if(In(nx,ny)&&!mp[nx][ny])q.push(cord(nx,ny,1,i)),vis[nx][ny]=1;
       }
       while(!q.empty()){
           cord cur=q.front();q.pop();
           for(int i=0;i<8;i++){
               int nx=cur.x+dx[i],ny=cur.y+dy[i];
               if(nx==x&&ny==y)return cur.fm;
-              if(!In(nx,ny)||vis[nx][ny])continue;
+              if(!In(nx,ny)||vis[nx][ny]||mp[nx][ny])continue;
               q.push(cord(nx,ny,cur.v+1,cur.fm)),vis[nx][ny]=1;
           }
       }

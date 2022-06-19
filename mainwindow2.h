@@ -22,17 +22,20 @@ public:
     vector<QLabel *> showwp; //武器显示界面
     vector<QLabel *> showaoe;//伤害范围标记
     QLabel * wphl; //当前选择武器高亮(WeaPon HighLight)
-    CCreature * cmp[TSizeX][TSizeY]; //按位置存储生物
-    int mode,mx,my; //mode表示当前进行的行动：0:移动，-1:选择武器，1~n:为发射武器mode选择目标   mx,my:目标指示器当前所在位置
-    MainWindow2(QWidget *parent = nullptr);
+    vector<QLabel *> showava;//可选武器标记
+    QLabel * sta; //状态指示（当前生命值，攻击力等）
+    CCreature * cmp[XMX][YMX]; //按位置存储生物
+    int mode,mx,my,lvl; //mode表示当前进行的行动：0:移动，-1:选择武器，1~n:为发射武器mode选择目标   mx,my:目标指示器当前所在位置 lvl:当前等级
+    MainWindow2(int level=1,QWidget *parent = nullptr);
     ~MainWindow2();
     void Back(); //退出游戏
+    void levelUp();//升级
     template<typename T>
     void trace(int fx,int fy,int tx,int ty,T act);//对(fx,fy)到(tx,ty)上的每个位置调用T函数
     void createShowaoe(int tx,int ty,Attack atk);
     bool checkDie(int nx,int ny); //检查在(nx,ny)生物是否死亡，如死亡则处理
     bool checkDie(CCreature * & tar);//检查生物tar是否死亡，如死亡则处理
-    void rAtk(CCreature * & src,int tx,int ty,Attack A); //src使用攻击A远程攻击位置(tx,ty)
+    void rAtk(CCreature * & src,int tx,int ty,Attack & A); //src使用攻击A远程攻击位置(tx,ty)
     void Upd_E(); //敌人行动
     void Move(int dir); //自己进行行动
     bool Upd_All(); //行动完后调用，进行所有不由玩家操控的行动与更新（包括敌人行动，检查游戏状态等）
