@@ -32,14 +32,15 @@ void MainWindow2::paintEvent(QPaintEvent *)
 
 using std::mt19937;
 mt19937 Rand(time(0));
-const int SHOWWPH=50; //每个武器显示的高度
-MainWindow2::MainWindow2(QWidget *parent) :
+const int SHOWWPH=50,SHOWWPW=200,SHOWWPX=1000,SHOWWPY=0; //每个武器显示的高度,宽度,x坐标，y坐标
+MainWindow2::MainWindow2(int level,QWidget *parent) :
     QMainWindow(parent),
     wphl(nullptr), //当前选择武器高亮(WeaPon HighLight)
     cmp{}, //按位置存储生物
     mode(0), //mode表示当前进行的行动：0:移动，-1:选择武器，1~n:为发射武器，mode选择目标
     mx(0),
     my(0), //mx,my:目标指示器，当前所在位置
+    lvl(level),
     ui(new Ui::MainWindow2)
 {
     setMouseTracking(true);//此处不加会导致鼠标在其上时不按鼠标按键时不追踪鼠标移动
@@ -52,26 +53,28 @@ MainWindow2::MainWindow2(QWidget *parent) :
     ui->actionPause->setIcon(QIcon(":/new/prefix1/pause.png"));
     ui->actionQuit->setIcon(QIcon(":/new/prefix1/exit.png"));
 
-    setWindowTitle("Welcome to the game. Good luck!");
+    setWindowTitle(QString::fromStdString("Level "+std::to_string(lvl)));
 
-    CCreature * u=new CCreature(0,0,0,10,4,ui->centralwidget,":/new/prefix1/me.png"); //自己，图源网络
-    u->atk.push_back(Attack(0,3,3,"Shoot"));
-    u->atk.push_back(Attack(1,2,4,"Bomb"));
-    u->atk.push_back(Attack(2,2,5,"Arrow")); //赋予武器
+    CCreature * u=new CCreature(0,0,0,10+lvl/2,4+lvl/2,ui->centralwidget,":/new/prefix1/me.png"); //自己，图源网络
+    u->atk.push_back(Attack(0,3+(lvl+1)/3,std::min(5,3+(lvl+2)/5),"Shoot",1));
+    u->atk.push_back(Attack(1,2+(lvl+2)/3,std::min(6,4+lvl/5),"Bomb",3));
+    u->atk.push_back(Attack(2,3+lvl/3,std::min(7,5+lvl/4),"Arrow",2)); //赋予武器
     plax=&(u->posx),play=&(u->posy);
     self=u;
     clist.push_back(u);
     cmp[0][0]=u;
-    for(int i=0;i<7;i++){ //生成7个敌人
+    for(int i=0;i<std::min(lvl*2/3+3,20);i++){ //生成level*2/3+3个敌人,最多20个
         int px=Rand()%XMX,py=Rand()%YMX;
         while(cmp[px][py])px=Rand()%XMX,py=Rand()%YMX; //随机生成敌人位置
-        CCreature * u=new CCreature(1,px,py,6,2,ui->centralwidget,":/new/prefix1/Enemy.png"); //图源网络
+        CCreature * u=new CCreature(1,px,py,5+lvl,2+lvl/2,ui->centralwidget,":/new/prefix1/Enemy.png"); //图源网络
         clist.push_back(u);
         cmp[px][py]=u;
     }
+    sta=new QLabel(ui->centralwidget);
+    sta->setGeometry(SHOWWPX,SHOWWPY,SHOWWPW,SHOWWPH);
+    sta->show();
     UpdWpList(); //更新武器显示界面
 }
-
 template<typename T>
 void MainWindow2::trace(int fx,int fy,int tx,int ty,T act){
     int cx=fx,cy=fy;
@@ -95,25 +98,33 @@ void MainWindow2::trace(int fx,int fy,int tx,int ty,T act){
     }
 }
 void MainWindow2::UpdWpList(int ch){
-
     for(int i=0;i<showwp.size();i++)delete showwp[i];
     showwp.clear();
+    for(auto &x:showava)delete x;
+    showava.clear();
     if(wphl)delete wphl,wphl=nullptr; //清除原有显示
+    sta->setText(QString::fromStdString("HP:"+std::to_string(self->hp)+"/"+std::to_string(self->mhp)+" mATK:"+std::to_string(self->mAtk)));
     if(ch==-1){
-        wphl=new QLabel(ui->centralwidget); //指示可选攻击
-        wphl->setGeometry(1000,0,200,SHOWWPH*self->atk.size());
-        wphl->setStyleSheet("background-color: rgba(127, 127, 127, 20);"); //灰色
-        wphl->show();
+        for(int i=0;i<self->atk.size();i++){
+            if(!self->atk[i].curcd){
+                auto tmp=new QLabel(ui->centralwidget); //指示可选攻击
+                tmp->setGeometry(SHOWWPX,SHOWWPY+SHOWWPH*(i+1),SHOWWPW,SHOWWPH);
+                tmp->setStyleSheet("background-color: rgba(127, 127, 127, 20);"); //灰色
+                tmp->show();
+                showava.push_back(tmp);
+            }
+        }
     }
     for(int i=0;i<self->atk.size();i++){
         auto nlabel=new QLabel(ui->centralwidget);
-        nlabel->setGeometry(1000,SHOWWPH*i,200,SHOWWPH);
-        nlabel->setText(QString::fromStdString(std::to_string(i+1)+" "+self->atk[i].name));
+        nlabel->setGeometry(SHOWWPX,SHOWWPY+SHOWWPH*(i+1),SHOWWPW,SHOWWPH);
+        auto txt=std::to_string(i+1)+" "+self->atk[i].name+" ATK:"+std::to_string(self->atk[i].atk)+" R:"+std::to_string(self->atk[i].r)+" CD:"+std::to_string(self->atk[i].curcd)+"/"+std::to_string(self->atk[i].cd-1);
+        nlabel->setText(QString::fromStdString(txt));
         nlabel->show();
         showwp.push_back(nlabel); //显示当前可用武器
         if(i==ch-1){
             wphl=new QLabel(ui->centralwidget); //指示当前选中攻击
-            wphl->setGeometry(1000,50*i,200,50);
+            wphl->setGeometry(SHOWWPX,SHOWWPY+SHOWWPH*(i+1),SHOWWPW,SHOWWPH);
             wphl->setStyleSheet("background-color: rgba(0, 0, 255, 20);"); //蓝色
             wphl->show();
         }
@@ -121,6 +132,11 @@ void MainWindow2::UpdWpList(int ch){
 }
 void MainWindow2::Back(){
     MainWindow1_2 * w=new MainWindow1_2;
+    w->show();
+    delete this;
+}
+void MainWindow2::levelUp(){
+    MainWindow2 * w=new MainWindow2(lvl+1);
     w->show();
     delete this;
 }
@@ -170,7 +186,8 @@ void MainWindow2::Move(int dir){
 
     Upd_All();
 }
-void MainWindow2::rAtk(CCreature * & src,int tx,int ty,Attack A){
+void MainWindow2::rAtk(CCreature * & src,int tx,int ty,Attack & A){
+    A.curcd=A.cd;
     for(int i=0;i<XMX;i++)
         for(int j=0;j<YMX;j++){
             if(cmp[i][j]&&cmp[i][j]->id==1&&A.InRange(i,j,tx,ty)){
@@ -191,7 +208,7 @@ void MainWindow2::rAtk(CCreature * & src,int tx,int ty,Attack A){
 void MainWindow2::Upd_E(){
     for(int i=1;i<clist.size();i++){
         int bx=clist[i]->posx,by=clist[i]->posy;
-        int nd=clist[i]->FindPath();
+        int nd=clist[i]->FindPath(cmp);
         int nx=bx+dx[nd],ny=by+dy[nd];
         if(cmp[nx][ny]){
             if(cmp[nx][ny]->id==0)
@@ -205,11 +222,12 @@ void MainWindow2::Upd_E(){
 }
 bool MainWindow2::Upd_All(){
     Upd_E();
+    for(auto &x:self->atk)if(x.curcd)--x.curcd;
     UpdWpList();
     for(int i=0;i<clist.size();i++)clist[i]->upd();
     if(clist.size()==1){//敌人全部死亡，成功
-        QMessageBox::warning(this, tr("Congratulations! You win."), tr("Congratulations! You win."));
-        Back();
+        QMessageBox::warning(this, tr("Congratulations! You win. Level up!"), tr("Congratulations! You win. Level up!"));
+        levelUp();
         return true;
     }
     if(self->hp<=0){//玩家血量<=0，失败
@@ -259,22 +277,29 @@ void MainWindow2::keyPressEvent(QKeyEvent *k){
         case Qt::Key_Escape:ch=-1;break;
         }
            if(ch>=0){
-                mode=ch;
-                UpdWpList(mode);
-                for(int i=0;i<XMX;i++)
-                     for(int j=0;j<YMX;j++){
-                         if(InRange(i,j,self->atk[mode-1].r)){//显示范围
-                             auto aim2=new QLabel(ui->centralwidget);
-                             aim2->setGeometry(i*TSizeX,j*TSizeY,50,50);
-                             aim2->setStyleSheet("background-color: rgba(0, 0, 255, 10);");//更浅的蓝色
-                             aim2->setMouseTracking(true);
-                             aim2->show();
-                             showr.push_back(aim2);
-                         }
-                     }
-                if(InRange(mx,my,self->atk[mode-1].r)){
-                    createShowaoe(mx,my,self->atk[mode-1]);
-                }
+               if(self->atk[ch-1].curcd>0){
+                   QMessageBox::warning(this, tr("Weapon in cooldown"), tr(("You cannot use the weapon "+self->atk[ch-1].name+" now. It is still in cooldown.").c_str()));
+                   mode=0;UpdWpList();
+               }
+               else{
+                   mode=ch;
+                   UpdWpList(mode);
+                   for(int i=0;i<XMX;i++)
+                        for(int j=0;j<YMX;j++){
+                            if(InRange(i,j,self->atk[mode-1].r)){//显示范围
+                                auto aim2=new QLabel(ui->centralwidget);
+                                aim2->setGeometry(i*TSizeX,j*TSizeY,50,50);
+                                aim2->setStyleSheet("background-color: rgba(0, 0, 255, 10);");//更浅的蓝色
+                                aim2->setMouseTracking(true);
+                                aim2->show();
+                                showr.push_back(aim2);
+                            }
+                        }
+                   if(InRange(mx,my,self->atk[mode-1].r)){
+                       createShowaoe(mx,my,self->atk[mode-1]);
+                   }
+               }
+
             }
             else{
                 mode=0;UpdWpList();
@@ -326,6 +351,7 @@ MainWindow2::~MainWindow2()
     for(auto &x:showr)delete x;
     for(auto &x:showwp)delete x;
     for(auto &x:showaoe)delete x;
+    delete sta;
     delete wphl;
     delete ui;
 }
