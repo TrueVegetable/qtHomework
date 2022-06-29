@@ -33,7 +33,7 @@ void MainWindow2::paintEvent(QPaintEvent *)
 using std::mt19937;
 mt19937 Rand(time(0));
 const int SHOWWPH=50,SHOWWPW=200,SHOWWPX=1000,SHOWWPY=0; //每个武器显示的高度,宽度,x坐标，y坐标
-MainWindow2::MainWindow2(int level,QWidget *parent) :
+MainWindow2::MainWindow2(std::string usrname,int level,int read_mode,QWidget *parent)://read_mode表示是否为读档创建
     QMainWindow(parent),
     wphl(nullptr), //当前选择武器高亮(WeaPon HighLight)
     cmp{}, //按位置存储生物
@@ -41,6 +41,7 @@ MainWindow2::MainWindow2(int level,QWidget *parent) :
     mx(0),
     my(0), //mx,my:目标指示器，当前所在位置
     lvl(level),
+    usrname(usrname),
     ui(new Ui::MainWindow2)
 {
     setMouseTracking(true);//此处不加会导致鼠标在其上时不按鼠标按键时不追踪鼠标移动
@@ -63,18 +64,21 @@ MainWindow2::MainWindow2(int level,QWidget *parent) :
     self=u;
     clist.push_back(u);
     cmp[0][0]=u;
-    for(int i=0;i<std::min(lvl*2/3+3,20);i++){ //生成level*2/3+3个敌人,最多20个
-        int px=Rand()%XMX,py=Rand()%YMX;
-        while(cmp[px][py])px=Rand()%XMX,py=Rand()%YMX; //随机生成敌人位置
-        CCreature * u=new CCreature(1,px,py,5+lvl,2+lvl/2,ui->centralwidget,":/new/prefix1/Enemy.png"); //图源网络
-        clist.push_back(u);
-        cmp[px][py]=u;
+    if(!read_mode){ //如果不是读档，即是新游戏
+        for(int i=0;i<std::min(lvl*2/3+3,20);i++){ //生成level*2/3+3个敌人,最多20个
+            int px=Rand()%XMX,py=Rand()%YMX;
+            while(cmp[px][py])px=Rand()%XMX,py=Rand()%YMX; //随机生成敌人位置
+            CCreature * u=new CCreature(1,px,py,5+lvl,2+lvl/2,ui->centralwidget,":/new/prefix1/Enemy.png"); //图源网络
+            clist.push_back(u);
+            cmp[px][py]=u;
+        }
     }
     sta=new QLabel(ui->centralwidget);//显示玩家状态
     sta->setGeometry(SHOWWPX,SHOWWPY,SHOWWPW,SHOWWPH);
     sta->show();
-    UpdWpList(); //更新武器显示界面
+    if(!read_mode) UpdWpList();
 }
+
 template<typename T>
 void MainWindow2::trace(int fx,int fy,int tx,int ty,T act){
     int cx=fx,cy=fy;
@@ -131,12 +135,12 @@ void MainWindow2::UpdWpList(int ch){
     }
 }
 void MainWindow2::Back(){
-    MainWindow1_2 * w=new MainWindow1_2;
+    MainWindow1_2 * w=new MainWindow1_2(this->usrname);
     w->show();
     delete this;
 }
 void MainWindow2::levelUp(){
-    MainWindow2 * w=new MainWindow2(lvl+1);
+    MainWindow2 * w=new MainWindow2(this->usrname,lvl+1);
     w->show();
     delete this;
 }
@@ -336,7 +340,6 @@ void MainWindow2::mouseMoveEvent(QMouseEvent *k){
 }
 void MainWindow2::mousePressEvent(QMouseEvent *k){
     if(mode<=0)return;
-
     if(k->button()==Qt::LeftButton){
         int nx=k->pos().x()/TSizeX,ny=(k->pos().y()-22)/TSizeY;
         if(InRange(nx,ny,self->atk[mode-1].r,*plax,*play)){
@@ -372,14 +375,16 @@ void MainWindow2::hint()
 bool MainWindow2::save_archive(int num){
     // 写文件
     if (num==1){
-        std::ifstream inFile("saving1.txt",std::ios::in);
+        std::ifstream inFile((usrname+"_saving1.txt").c_str(),std::ios::in);
         if(inFile.is_open()){
             inFile.close();
             return false;
         } else {
-            std::ofstream outFile("saving1.txt",std::ios::out);
+            std::ofstream outFile((usrname+"_saving1.txt").c_str(),std::ios::out);
+            outFile<<lvl<<std::endl;
             outFile<<self->id<<" "<<self->posx<<" "<<self->posy<<" "<<self->mhp<<" "
                                   <<self->hp<<" "<<self->mAtk<<std::endl;
+            outFile<<self->atk[0].curcd<<" "<<self->atk[1].curcd<<" "<<self->atk[2].curcd<<std::endl;
             outFile<<clist.size()<<std::endl;
             for(int i=1;i<clist.size();i++){
                 outFile<<clist[i]->id<<" "<<clist[i]->posx<<" "<<clist[i]->posy<<" "<<clist[i]->mhp<<" "
@@ -401,14 +406,16 @@ bool MainWindow2::save_archive(int num){
             return true;
         }
     } else if(num==2){
-        std::ifstream inFile("saving2.txt",std::ios::in);
+        std::ifstream inFile((usrname+"_saving2.txt").c_str(),std::ios::in);
         if(inFile.is_open()){
             inFile.close();
             return false;
         } else {
-            std::ofstream outFile("saving2.txt",std::ios::out);
+            std::ofstream outFile((usrname+"_saving2.txt").c_str(),std::ios::out);
+            outFile<<lvl<<std::endl;
             outFile<<self->id<<" "<<self->posx<<" "<<self->posy<<" "<<self->mhp<<" "
                                   <<self->hp<<" "<<self->mAtk<<std::endl;
+            outFile<<self->atk[0].curcd<<" "<<self->atk[1].curcd<<" "<<self->atk[2].curcd<<std::endl;
             outFile<<clist.size()<<std::endl;
             for(int i=1;i<clist.size();i++){
                 outFile<<clist[i]->id<<" "<<clist[i]->posx<<" "<<clist[i]->posy<<" "<<clist[i]->mhp<<" "
@@ -436,9 +443,11 @@ bool MainWindow2::save_archive(int num){
 }
 
 /* 存储格式：.txt
+ * row0: lvl
  * row1: self ( in sequence: int Id,int px,int py,int mhp,int hp,int mATK )
- * row2: size of clist - n
- * row3-(n+1): a creature in clist per row EXCEPT SELF ( in sequence: int Id,int px,int py,int mhp,int hp,int mATK )
- * row(n+2): mode, mx, my in sequence
+ * row2: curcd of each weapon ( now only "me" have that )
+ * row3: size of clist - n
+ * row4-(n+2): a creature in clist per row EXCEPT SELF ( in sequence: int Id,int px,int py,int mhp,int hp,int mATK )
+ * row(n+3): mode, mx, myin sequence
  * !!!different numbers in one row will be separated by a whitespace
  */
