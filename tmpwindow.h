@@ -20,6 +20,7 @@ public:
     void t_quit();
     void t_save_quit1();
     void t_save_quit2();
+    void re_save_quit(int num);
     void on_pushButton_3_clicked();
     void on_pushButton_4_clicked();
 private slots:

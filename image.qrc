@@ -11,5 +11,8 @@
         <file>question.png</file>
         <file>exit.png</file>
         <file>pause.png</file>
+        <file>fire.png</file>
+        <file>montain.png</file>
+        <file>blackhole.png</file>
     </qresource>
 </RCC>

@@ -18,6 +18,7 @@ SOURCES += \
     mainwindow2.cpp \
     mainwindow_help.cpp \
     registerpage.cpp \
+    save_request.cpp \
     tmpwindow.cpp
 
 HEADERS += \
@@ -29,6 +30,7 @@ HEADERS += \
     mainwindow2.h \
     mainwindow_help.h \
     registerpage.h \
+    save_request.h \
     tmpwindow.h \
     ui_login.h \
     ui_mainwindow.h \
@@ -46,6 +48,7 @@ FORMS += \
     mainwindow2.ui \
     mainwindow_help.ui \
     registerpage.ui \
+    save_request.ui \
     tmpwindow.ui
 
 # Default rules for deployment.
