@@ -27,7 +27,7 @@ TmpWindow::~TmpWindow()
 
 void TmpWindow::t_quit()
 {
-    MainWindow1_2 *N_window = new MainWindow1_2;
+    MainWindow1_2 *N_window = new MainWindow1_2(now->usrname);
     N_window->show();
     delete now; //删掉上一层的游戏界面，返回主菜单
     delete this; //删掉自己

@@ -90,7 +90,7 @@
     </rect>
    </property>
    <property name="text">
-    <string>确认</string>
+    <string>Login</string>
    </property>
   </widget>
   <widget class="QPushButton" name="exitButton">
@@ -103,9 +103,30 @@
     </rect>
    </property>
    <property name="text">
-    <string>取消</string>
+    <string>Cancel</string>
    </property>
   </widget>
+  <widget class="QPushButton" name="regisButton">
+   <property name="geometry">
+    <rect>
+     <x>40</x>
+     <y>240</y>
+     <width>101</width>
+     <height>24</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Register</string>
+   </property>
+  </widget>
+  <zorder>exitButton</zorder>
+  <zorder>usrLineEdit</zorder>
+  <zorder>label</zorder>
+  <zorder>label_2</zorder>
+  <zorder>pwdLineEdit</zorder>
+  <zorder>label_3</zorder>
+  <zorder>loginButton</zorder>
+  <zorder>regisButton</zorder>
  </widget>
  <resources/>
  <connections>

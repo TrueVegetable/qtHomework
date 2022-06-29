@@ -31,6 +31,7 @@ public:
     QLabel *label_3;
     QPushButton *loginButton;
     QPushButton *exitButton;
+    QPushButton *regisButton;
 
     void setupUi(QDialog *Login)
     {
@@ -62,6 +63,9 @@ public:
         exitButton = new QPushButton(Login);
         exitButton->setObjectName(QStringLiteral("exitButton"));
         exitButton->setGeometry(QRect(290, 240, 80, 24));
+        regisButton = new QPushButton(Login);
+        regisButton->setObjectName(QStringLiteral("regisButton"));
+        regisButton->setGeometry(QRect(40, 240, 101, 24));
 
         retranslateUi(Login);
         QObject::connect(exitButton, SIGNAL(clicked()), Login, SLOT(close()));
@@ -75,8 +79,9 @@ public:
         label->setText(QApplication::translate("Login", "Username", Q_NULLPTR));
         label_2->setText(QApplication::translate("Login", "Password", Q_NULLPTR));
         label_3->setText(QApplication::translate("Login", "Welcome!", Q_NULLPTR));
-        loginButton->setText(QApplication::translate("Login", "\347\241\256\350\256\244", Q_NULLPTR));
-        exitButton->setText(QApplication::translate("Login", "\345\217\226\346\266\210", Q_NULLPTR));
+        loginButton->setText(QApplication::translate("Login", "Login", Q_NULLPTR));
+        exitButton->setText(QApplication::translate("Login", "Cancel", Q_NULLPTR));
+        regisButton->setText(QApplication::translate("Login", "Register", Q_NULLPTR));
     } // retranslateUi
 
 };

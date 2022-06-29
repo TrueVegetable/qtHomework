@@ -13,9 +13,10 @@ class MainWindow1_2 : public QMainWindow
     Q_OBJECT
 
 public:
-    explicit MainWindow1_2(QWidget *parent = nullptr);
+    explicit MainWindow1_2(std::string name, QWidget *parent = nullptr);
     ~MainWindow1_2();
-    void read_archive(char const * filename);
+    void read_archive(std::string usrname,int num);
+    std::string filename;
 
 private slots:
     void on_NGbtm_clicked();

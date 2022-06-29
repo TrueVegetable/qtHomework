@@ -26,7 +26,8 @@ public:
     QLabel * sta; //状态指示（当前生命值，攻击力等）
     CCreature * cmp[XMX][YMX]; //按位置存储生物
     int mode,mx,my,lvl; //mode表示当前进行的行动：0:移动，-1:选择武器，1~n:为发射武器mode选择目标   mx,my:目标指示器当前所在位置 lvl:当前等级
-    MainWindow2(int level=1,QWidget *parent = nullptr);
+    std::string usrname;
+    MainWindow2(std::string usrname,int level=1,int read_mode=0,QWidget *parent = nullptr);//read_mode表示是否为读档创建
     ~MainWindow2();
     void Back(); //退出游戏
     void levelUp();//升级

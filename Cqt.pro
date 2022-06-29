@@ -17,6 +17,7 @@ SOURCES += \
     mainwindow1_2.cpp \
     mainwindow2.cpp \
     mainwindow_help.cpp \
+    registerpage.cpp \
     tmpwindow.cpp
 
 HEADERS += \
@@ -27,11 +28,14 @@ HEADERS += \
     mainwindow1_2.h \
     mainwindow2.h \
     mainwindow_help.h \
+    registerpage.h \
     tmpwindow.h \
     ui_login.h \
     ui_mainwindow.h \
     ui_mainwindow2.h \
     ui_mainwindow_help.h \
+    ui_registerpage.h \
+    ui_registerpage.h \
     ui_tmpwindow.h
 
 FORMS += \
@@ -41,6 +45,7 @@ FORMS += \
     mainwindow1_2.ui \
     mainwindow2.ui \
     mainwindow_help.ui \
+    registerpage.ui \
     tmpwindow.ui
 
 # Default rules for deployment.

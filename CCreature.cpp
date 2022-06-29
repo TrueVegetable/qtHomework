@@ -5,6 +5,7 @@
 #include <queue>
 #include <algorithm>
 #include <random>
+#include <iostream>
 using std::abs;
 typedef std::pair<int,int> pii;
 int * plax=nullptr, * play=nullptr; //玩家、敌人
@@ -72,16 +73,23 @@ void CCreature::rAtk(CCreature * & tar,class Attack & A){
     A.hit(tar);
 }
 CCreature::CCreature(int Id,int px,int py,int HP,int mATK,QWidget *parent,std::string Path){
+    std::cout<<"here6_0"<<std::endl;
     id=Id,posx=px,posy=py,mAtk=mATK,hp=mhp=HP;
+    std::cout<<"here6_11"<<std::endl;
     pic=new QLabel(parent);
+    std::cout<<"here6_1"<<std::endl;
     pic->setMouseTracking(true); //此处不加会导致鼠标在其上时不按鼠标按键时不追踪鼠标移动
     //pic->setObjectName(QString::fromUtf8("label"));
+    std::cout<<"here6_2"<<std::endl;
     pic->setGeometry(QRect(px*TSizeX, py*TSizeY, TSizeX, TSizeY));
     pic->setPixmap(QPixmap(QString::fromStdString(Path)));
+    std::cout<<"here6_3"<<std::endl;
     pic->setScaledContents(true);
     pic->show(); //设置人物形象
+    std::cout<<"here6_4"<<std::endl;
     hpbar=new QProgressBar(parent);
     hpbar->setMouseTracking(true);
+    std::cout<<"here6_5"<<std::endl;
     hpbar->setMaximum(mhp);
     hpbar->setMinimum(0);
     hpbar->setValue(hp);
