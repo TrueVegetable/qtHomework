@@ -32,7 +32,7 @@ public:
     void rAtk(CCreature * & tar,Attack & A); //该生物使用攻击A远程攻击生物tar
     void upd(); //更新状态（目前只有血条）
     bool Attack(CCreature * target); //近身攻击target
-    int FindPath(CCreature * mp[XMX][YMX],int x = *plax,int y = *play); //用bfs找到当前到(x,y)的路线，返回当前该走的方向
+    int FindPath(CCreature * mp[XMX][YMX],int map[XMX][YMX],int x = *plax,int y = *play); //用bfs找到当前到(x,y)的路线，返回当前该走的方向
     ~CCreature();
 };
 

@@ -73,23 +73,21 @@ void CCreature::rAtk(CCreature * & tar,class Attack & A){
     A.hit(tar);
 }
 CCreature::CCreature(int Id,int px,int py,int HP,int mATK,QWidget *parent,std::string Path){
-    std::cout<<"here6_0"<<std::endl;
     id=Id,posx=px,posy=py,mAtk=mATK,hp=mhp=HP;
-    std::cout<<"here6_11"<<std::endl;
     pic=new QLabel(parent);
-    std::cout<<"here6_1"<<std::endl;
+    //std::cout<<"here6_1"<<std::endl;
     pic->setMouseTracking(true); //此处不加会导致鼠标在其上时不按鼠标按键时不追踪鼠标移动
     //pic->setObjectName(QString::fromUtf8("label"));
-    std::cout<<"here6_2"<<std::endl;
+    //std::cout<<"here6_2"<<std::endl;
     pic->setGeometry(QRect(px*TSizeX, py*TSizeY, TSizeX, TSizeY));
     pic->setPixmap(QPixmap(QString::fromStdString(Path)));
-    std::cout<<"here6_3"<<std::endl;
+    //std::cout<<"here6_3"<<std::endl;
     pic->setScaledContents(true);
     pic->show(); //设置人物形象
-    std::cout<<"here6_4"<<std::endl;
+    //std::cout<<"here6_4"<<std::endl;
     hpbar=new QProgressBar(parent);
     hpbar->setMouseTracking(true);
-    std::cout<<"here6_5"<<std::endl;
+    //std::cout<<"here6_5"<<std::endl;
     hpbar->setMaximum(mhp);
     hpbar->setMinimum(0);
     hpbar->setValue(hp);
@@ -119,7 +117,7 @@ struct cord{
     }
     cord(int a,int b,int c,int d):x(a),y(b),v(c),fm(d){}
 }; //表示坐标
-int CCreature::FindPath(CCreature * mp[XMX][YMX],int x,int y){
+int CCreature::FindPath(CCreature * mp[XMX][YMX],int mapp[XMX][YMX],int x,int y){
       int vis[XMX][YMX];
       memset(vis,0,sizeof(vis));
       std::queue<cord> q;
@@ -127,14 +125,14 @@ int CCreature::FindPath(CCreature * mp[XMX][YMX],int x,int y){
       for(int i=0;i<8;i++){
           int nx=posx+dx[i],ny=posy+dy[i];
           if(nx==x&&ny==y)return i;
-          if(In(nx,ny)&&!mp[nx][ny])q.push(cord(nx,ny,1,i)),vis[nx][ny]=1;
+          if(In(nx,ny)&&!mp[nx][ny]&&mapp[nx][ny]!=1&&mapp[nx][ny]!=2)q.push(cord(nx,ny,1,i)),vis[nx][ny]=1;
       }
       while(!q.empty()){
           cord cur=q.front();q.pop();
           for(int i=0;i<8;i++){
               int nx=cur.x+dx[i],ny=cur.y+dy[i];
               if(nx==x&&ny==y)return cur.fm;
-              if(!In(nx,ny)||vis[nx][ny]||mp[nx][ny])continue;
+              if(!In(nx,ny)||vis[nx][ny]||mp[nx][ny]||mapp[nx][ny]==1||mapp[nx][ny]==2)continue;
               q.push(cord(nx,ny,cur.v+1,cur.fm)),vis[nx][ny]=1;
           }
       }

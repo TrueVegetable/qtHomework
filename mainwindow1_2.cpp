@@ -95,6 +95,15 @@ void MainWindow1_2::read_archive(std::string usrname,int num){
     std::ifstream  inFile((filename).c_str(),std::ios::in);
     int level; inFile>>level;
     MainWindow2 * gw2=new MainWindow2(usrname,level,1);
+    //绘制地图
+    memset(gw2->mapp,0,XMX*YMX*sizeof(int));
+    for(int i=0;i<XMX;i++){
+        for(int j=0;j<YMX;j++){
+            inFile>>gw2->mapp[i][j];
+        }
+    }
+    gw2->showmapp();
+    //地图绘制完毕
     std::cout<<"here1"<<std::endl;
     int id,px,py,mhp,hp,matk,cd1,cd2,cd3;
     inFile>>id>>px>>py>>mhp>>hp>>matk;
@@ -111,7 +120,7 @@ void MainWindow1_2::read_archive(std::string usrname,int num){
     gw2->self->upd();
     std::cout<<"here2"<<std::endl;
     plax = &(gw2->self->posx); play= &(gw2->self->posy);
-    gw2->clist.clear();
+    //gw2->clist.clear();
 
 //    for(int i=0;i<TSizeX;i++){
 //        for(int j=0;j<TSizeY;j++)
@@ -121,7 +130,7 @@ void MainWindow1_2::read_archive(std::string usrname,int num){
     gw2->clist.push_back(u);
     std::cout<<"here3.1"<<std::endl;
     gw2->cmp[px][py] = u;
-    if(px!=0||py!=0) delete gw2->cmp[0][0];
+    //if(px!=0||py!=0) delete gw2->cmp[0][0];
     std::cout<<"here3.5"<<std::endl;
     int len_clist;
     inFile>>len_clist;

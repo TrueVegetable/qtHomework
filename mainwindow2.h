@@ -25,10 +25,13 @@ public:
     vector<QLabel *> showava;//可选武器标记
     QLabel * sta; //状态指示（当前生命值，攻击力等）
     CCreature * cmp[XMX][YMX]; //按位置存储生物
+    int mapp[XMX][YMX]; //按位置存储地图，0为正常地，1为水坑/黑洞，2为岩石，3为火堆
     int mode,mx,my,lvl; //mode表示当前进行的行动：0:移动，-1:选择武器，1~n:为发射武器mode选择目标   mx,my:目标指示器当前所在位置 lvl:当前等级
     std::string usrname;
     MainWindow2(std::string usrname,int level=1,int read_mode=0,QWidget *parent = nullptr);//read_mode表示是否为读档创建
     ~MainWindow2();
+    void drawmapp();//绘制地图（设计矩阵）
+    void showmapp();//展示地图图片
     void Back(); //退出游戏
     void levelUp();//升级
     template<typename T>
@@ -44,7 +47,7 @@ public:
     void keyPressEvent(QKeyEvent *k); //qt自带函数，按下键盘按键时调用
     void mouseMoveEvent(QMouseEvent *k); //qt自带函数，鼠标移动时调用
     void mousePressEvent(QMouseEvent *k);//qt自带函数，按下鼠标按键时调用
-    void paintEvent(QPaintEvent *); //画图事件
+    //void paintEvent(QPaintEvent *); //画图事件
     int pposx,pposy,pposx2,pposy2; //远程攻击的起点和终点
     void option(); //弹出tmpwindow
     void hint(); //弹出提示框
