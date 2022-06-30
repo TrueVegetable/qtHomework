@@ -54,9 +54,11 @@ public:
         PwdLine = new QLineEdit(Registerpage);
         PwdLine->setObjectName(QStringLiteral("PwdLine"));
         PwdLine->setGeometry(QRect(160, 130, 181, 21));
+        PwdLine->setEchoMode(QLineEdit::Password);
         CheLine = new QLineEdit(Registerpage);
         CheLine->setObjectName(QStringLiteral("CheLine"));
         CheLine->setGeometry(QRect(160, 170, 181, 21));
+        CheLine->setEchoMode(QLineEdit::Password);
         label_2 = new QLabel(Registerpage);
         label_2->setObjectName(QStringLiteral("label_2"));
         label_2->setGeometry(QRect(70, 90, 81, 21));

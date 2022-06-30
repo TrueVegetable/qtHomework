@@ -108,7 +108,7 @@ void MainWindow1_2::read_archive(std::string usrname,int num){
     inFile>>cd1>>cd2>>cd3;
     inFile>>id>>px>>py>>mhp>>hp>>matk>>SAD;
 
-    CCreature * u=new CCreature(id,px,py,mhp,matk,gw2->use_ui()->centralwidget,":/new/prefix1/me.png",SAD);
+    CCreature * u=new CCreature(id,px,py,mhp,matk,gw2->use_ui()->centralwidget,":/new/prefix1/kiluya"+std::to_string((level+1)/2)+".png",SAD);
     gw2->self = u;
     gw2->self->hp = hp;
     gw2->self->atk.push_back(Attack(0,3+(level+1)/3,std::min(5,3+(level+2)/5),"Shoot",1));
