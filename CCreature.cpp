@@ -72,27 +72,23 @@ void Attack::hit(CCreature * & tar){
 void CCreature::rAtk(CCreature * & tar,class Attack & A){
     A.hit(tar);
 }
-CCreature::CCreature(int Id,int px,int py,int HP,int mATK,QWidget *parent,std::string Path){
-    id=Id,posx=px,posy=py,mAtk=mATK,hp=mhp=HP;
+CCreature::CCreature(int Id,int px,int py,int HP,int mATK,QWidget *parent,std::string Path,int SADD){
+    id=Id,posx=px,posy=py,mAtk=mATK,hp=mhp=HP,SAD = SADD;
     pic=new QLabel(parent);
-    //std::cout<<"here6_1"<<std::endl;
     pic->setMouseTracking(true); //此处不加会导致鼠标在其上时不按鼠标按键时不追踪鼠标移动
     //pic->setObjectName(QString::fromUtf8("label"));
-    //std::cout<<"here6_2"<<std::endl;
     pic->setGeometry(QRect(px*TSizeX, py*TSizeY, TSizeX, TSizeY));
     pic->setPixmap(QPixmap(QString::fromStdString(Path)));
-    //std::cout<<"here6_3"<<std::endl;
     pic->setScaledContents(true);
     pic->show(); //设置人物形象
-    //std::cout<<"here6_4"<<std::endl;
     hpbar=new QProgressBar(parent);
     hpbar->setMouseTracking(true);
-    //std::cout<<"here6_5"<<std::endl;
     hpbar->setMaximum(mhp);
     hpbar->setMinimum(0);
     hpbar->setValue(hp);
     hpbar->setGeometry(px*TSizeX,py*TSizeY,TSizeX,TSizeY/5);
     hpbar->show(); //设置血条
+    speci(); //根据SAD设置enemy的血量和攻击力
 }
 void CCreature::Move(int nx,int ny){
     posx=nx,posy=ny;
@@ -138,3 +134,30 @@ int CCreature::FindPath(CCreature * mp[XMX][YMX],int mapp[XMX][YMX],int x,int y)
       }
       return N;
 } //用bfs找到当前到(x,y)的路线，返回当前该走的方向
+void CCreature::speci()
+{
+    if (id == 0) return;
+    if (SAD == 1)
+    {
+        hp--;
+        mAtk++;
+    }
+    if (SAD == 2)
+    {
+        hp-=2;
+        mAtk+=2;
+    }
+    return;
+}
+//更改士兵属性，A和D只有远程攻击属性，血量低攻击高
+
+bool CCreature::Range_Ar(int tax,int tay){
+    if (abs(tax-posx) <= 3 && abs(tay-posy) == abs(tax-posx)) return true;
+    else return false;
+}
+ //判断me是否在Archer的攻击范围内
+
+bool CCreature::Range_De(int taxx,int tayy){
+    if (abs(taxx-posx) <= 2 && abs(tayy-posy) <= 2) return true;
+    else return false;
+}

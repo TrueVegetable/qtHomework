@@ -47,7 +47,7 @@ public:
     void keyPressEvent(QKeyEvent *k); //qt自带函数，按下键盘按键时调用
     void mouseMoveEvent(QMouseEvent *k); //qt自带函数，鼠标移动时调用
     void mousePressEvent(QMouseEvent *k);//qt自带函数，按下鼠标按键时调用
-    //void paintEvent(QPaintEvent *); //画图事件
+    void paintEvent(QPaintEvent *); //画图事件
     int pposx,pposy,pposx2,pposy2; //远程攻击的起点和终点
     void option(); //弹出tmpwindow
     void hint(); //弹出提示框
@@ -55,6 +55,9 @@ public:
     Ui::MainWindow2 * use_ui(){ //只在读取游戏存档的时候生成CCreature时用
         return ui;
     }
+    void pre_intro(); //level up == 2的时候弹出提示框
+    void next_intro(); //level up == 3的时候弹出提示框
+    vector<QLabel *> Demo_atk;
 private:
     Ui::MainWindow2 *ui;
 };

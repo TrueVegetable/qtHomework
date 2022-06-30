@@ -104,11 +104,11 @@ void MainWindow1_2::read_archive(std::string usrname,int num){
     }
     gw2->showmapp();
     //地图绘制完毕
-    std::cout<<"here1"<<std::endl;
-    int id,px,py,mhp,hp,matk,cd1,cd2,cd3;
-    inFile>>id>>px>>py>>mhp>>hp>>matk;
+    int id,px,py,mhp,hp,matk,cd1,cd2,cd3,SAD;
     inFile>>cd1>>cd2>>cd3;
-    CCreature * u=new CCreature(id,px,py,mhp,matk,gw2->use_ui()->centralwidget,":/new/prefix1/me.png");
+    inFile>>id>>px>>py>>mhp>>hp>>matk>>SAD;
+
+    CCreature * u=new CCreature(id,px,py,mhp,matk,gw2->use_ui()->centralwidget,":/new/prefix1/me.png",SAD);
     gw2->self = u;
     gw2->self->hp = hp;
     gw2->self->atk.push_back(Attack(0,3+(level+1)/3,std::min(5,3+(level+2)/5),"Shoot",1));
@@ -126,29 +126,21 @@ void MainWindow1_2::read_archive(std::string usrname,int num){
 //        for(int j=0;j<TSizeY;j++)
 //            if(gw2->cmp[i][j]) gw2->cmp[i][j] = nullptr;
 //    }
-    std::cout<<"here3"<<std::endl;
     gw2->clist.push_back(u);
-    std::cout<<"here3.1"<<std::endl;
     gw2->cmp[px][py] = u;
     //if(px!=0||py!=0) delete gw2->cmp[0][0];
-    std::cout<<"here3.5"<<std::endl;
     int len_clist;
     inFile>>len_clist;
     for(int i =1;i<len_clist;i++){
-        inFile>>id>>px>>py>>mhp>>hp>>matk;
+        inFile>>id>>px>>py>>mhp>>hp>>matk>>SAD;
         std::cout<<"here41"<<std::endl;
         std::cout<<id<<" "<<px<<" "<<py<<" "<<mhp<<" "<<matk<<std::endl;
-        CCreature* c1 = new CCreature(id,px,py,mhp,matk,gw2->use_ui()->centralwidget,":/new/prefix1/Enemy.png");
-        std::cout<<"here42"<<std::endl;
+        CCreature* c1 = new CCreature(id,px,py,mhp,matk,gw2->use_ui()->centralwidget,":/new/prefix1/Enemy"+std::to_string(SAD+1)+".png",SAD);
         c1->hp = hp;
-        std::cout<<"here43"<<std::endl;
         c1->upd();
-        std::cout<<"here44"<<std::endl;
         gw2->cmp[px][py] = c1;
-        std::cout<<"here46"<<std::endl;
         gw2->clist.push_back(c1);
     }
-    std::cout<<"here45"<<std::endl;
     inFile>>gw2->mode;
     inFile>>gw2->mx;
     inFile>>gw2->my;

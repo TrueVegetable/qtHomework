@@ -65,7 +65,7 @@ MainWindow2::MainWindow2(std::string usrname,int level,int read_mode,QWidget *pa
         //展示图片
         showmapp();
         //地图生成完毕
-        CCreature * u=new CCreature(0,0,0,10+lvl/2,4+lvl/2,ui->centralwidget,":/new/prefix1/me.png"); //自己，图源网络
+        CCreature * u=new CCreature(0,0,0,10+lvl/2,4+lvl/2,ui->centralwidget,":/new/prefix1/me.png",0); //自己，图源网络
         u->atk.push_back(Attack(0,3+(lvl+1)/3,std::min(5,3+(lvl+2)/5),"Shoot",1));
         u->atk.push_back(Attack(1,2+(lvl+2)/3,std::min(6,4+lvl/5),"Bomb",3));
         u->atk.push_back(Attack(2,3+lvl/3,std::min(7,5+lvl/4),"Arrow",2)); //赋予武器
@@ -73,10 +73,12 @@ MainWindow2::MainWindow2(std::string usrname,int level,int read_mode,QWidget *pa
         self=u;
         clist.push_back(u);
         cmp[0][0]=u;
-        for(int i=0;i<std::min(lvl*2/3+3,20);i++){ //生成level*2/3+3个敌人,最多20个
-            int px=Rand()%XMX,py=Rand()%YMX;
+        int mx=std::min(lvl*2/3+3,20);
+        for(int i=0;i<mx;i++){ //生成level*2/3+3个敌人,最多20个
+            int px=Rand()%XMX,py=Rand()%YMX,mt=(lvl+1)/2,typ=Rand()%mt;
+            if(i<mt)typ=i;
             while(cmp[px][py]||mapp[px][py]>0)px=Rand()%XMX,py=Rand()%YMX; //随机生成敌人位置
-            CCreature * u=new CCreature(1,px,py,5+lvl,2+lvl/2,ui->centralwidget,":/new/prefix1/Enemy.png"); //图源网络
+            CCreature * u=new CCreature(1,px,py,5+lvl,2+lvl/2,ui->centralwidget,":/new/prefix1/Enemy"+std::to_string(typ+1)+".png",typ); //图源网络
             clist.push_back(u);
             cmp[px][py]=u;
         }
@@ -254,7 +256,7 @@ void MainWindow2::Move(int dir){
         checkDie(nx,ny);
     } //否则移动
     else if(mapp[nx][ny]==1 || mapp[nx][ny]==2){ //如果是水坑，黑洞或岩石，则无法移动
-        Upd_All();return;
+        return;
     }
     else if(mapp[nx][ny]==0 || mapp[nx][ny]==3){ //如果是普通的或者火焰，可以移动，但是火焰会扣血
         self->Move(nx,ny);
@@ -292,23 +294,48 @@ void MainWindow2::Upd_E(){
         int bx=clist[i]->posx,by=clist[i]->posy;
         int nd=clist[i]->FindPath(cmp,mapp);
         int nx=bx+dx[nd],ny=by+dy[nd];
+        if (clist[i]->SAD == 1 && clist[i]->use_time){
+            if(clist[i]->Range_Ar(clist[0]->posx,clist[0]->posy)){
+                clist[i]->Attack(clist[0]);
+                clist[i]->use_time--;
+                pposx = clist[i]->posx; pposy = clist[i]->posy;
+                update(); //Archer攻击动画
+                continue;
+                }
+            } //Archer，若检测到me在对角线上（以自身为中心长度为1的方形对角线）且武器还有使用次数，则攻击，否则移动
+        else if (clist[i]->SAD == 2 && clist[i]->use_time){
+            if (clist[i]->Range_De(clist[0]->posx,clist[0]->posy)){
+                clist[i]->Attack(clist[0]);
+                clist[i]->use_time--;
+                /*Demo_atk.clear();
+                for(int i=0;i<XMX;i++)
+                    for(int j=0;j<YMX;j++){
+                        if(clist[i]->Range_De(i,j)){
+                            auto use=new QLabel(ui->centralwidget);
+                            use->setGeometry(i*TSizeX,j*TSizeY,50,50);
+                            use->setStyleSheet("background-color: rgba(255, 0, 0, 20);");//红色
+                            use->show();
+                            Demo_atk.push_back(use);
+                        }
+                    } //Demo动画*/
+                continue;
+            }
+        }
+        if(mapp[nx][ny]==1 || mapp[nx][ny]==2){ //如果是水坑，黑洞或岩石，则无法移动
+            continue;
+        }
         if(cmp[nx][ny]){
             if(cmp[nx][ny]->id==0)
             clist[i]->Attack(cmp[nx][ny]);
             continue;
         }
-        else if(mapp[nx][ny]==1 || mapp[nx][ny]==2){ //如果是水坑，黑洞或岩石，则无法移动
-            continue;
+        if(mapp[nx][ny]==3){
+            clist[i]->hp--;
+            if(checkDie(clist[i]->posx,clist[i]->posy))continue;//如果是普通的或者火焰，可以移动，但是火焰会扣血
         }
-        else if(mapp[nx][ny]==0 || mapp[nx][ny]==3){ //如果是普通的或者火焰，可以移动，但是火焰会扣血
-            clist[i]->Move(nx,ny);
-            cmp[nx][ny]=cmp[bx][by];
-            cmp[bx][by]=nullptr;
-            if(mapp[nx][ny]==3){
-                clist[i]->hp--;
-                checkDie(nx,ny);
-            }
-        }
+        clist[i]->Move(nx,ny);
+        cmp[nx][ny]=cmp[bx][by];
+        cmp[bx][by]=nullptr;
     }
 }
 bool MainWindow2::Upd_All(){
@@ -461,89 +488,45 @@ void MainWindow2::hint()
 
 bool MainWindow2::save_archive(int num){
     // 写文件
-    if (num==1){
-        std::ifstream inFile((usrname+"_saving1.txt").c_str(),std::ios::in);
-        if(inFile.is_open()){
-            inFile.close();
-            return false;
-        } else {
-            std::ofstream outFile((usrname+"_saving1.txt").c_str(),std::ios::out);
-            outFile<<lvl<<std::endl;
-            for(int i=0;i<XMX;i++){
-                for(int j=0;j<YMX;j++){
-                    outFile<<mapp[i][j]<<" ";
-                }
-                outFile<<std::endl;
-            }
-            outFile<<self->id<<" "<<self->posx<<" "<<self->posy<<" "<<self->mhp<<" "
-                                  <<self->hp<<" "<<self->mAtk<<std::endl;
-            outFile<<self->atk[0].curcd<<" "<<self->atk[1].curcd<<" "<<self->atk[2].curcd<<std::endl;
-            outFile<<clist.size()<<std::endl;
-            for(int i=1;i<clist.size();i++){
-                outFile<<clist[i]->id<<" "<<clist[i]->posx<<" "<<clist[i]->posy<<" "<<clist[i]->mhp<<" "
-                      <<clist[i]->hp<<" "<<clist[i]->mAtk<<std::endl;
-            }
-
-//           for(int i=0;i<TSizeX;i++){
-//                for(int j=0;j<TSizeY;j++){
-//                    if(!cmp[i][j]){
-//                        outFile<<0<<std::endl;
-//                        continue;
-//                    }
-//                    outFile<<1<<" "<<cmp[i][j]->id<<" "<<cmp[i][j]->posx<<" "<<cmp[i][j]->posy<<" "<<cmp[i][j]->mhp<<" "
-//                          <<cmp[i][j]->hp<<" "<<cmp[i][j]->mAtk<<std::endl;
-//                }
-//            }
-            outFile<<mode<<" "<<mx<<" "<<my<<std::endl;
-            outFile.close();
-            return true;
-        }
-    } else if(num==2){
-        std::cout<<(usrname+"_saving2.txt").c_str()<<std::endl;
-        std::ifstream inFile((usrname+"_saving2.txt").c_str(),std::ios::in);
-        if(inFile.is_open()){
-            std::cout<<"11111111111"<<std::endl;
-            inFile.close();
-            return false;
-        } else {
-            std::cout<<"222222222222"<<std::endl;
-            std::ofstream outFile((usrname+"_saving2.txt").c_str(),std::ios::out);
-            outFile<<lvl<<std::endl;
-            for(int i=0;i<XMX;i++){
-                for(int j=0;j<YMX;j++){
-                    outFile<<mapp[i][j]<<" ";
-                }
-                outFile<<std::endl;
-            }
-            outFile<<self->id<<" "<<self->posx<<" "<<self->posy<<" "<<self->mhp<<" "
-                                  <<self->hp<<" "<<self->mAtk<<std::endl;
-            outFile<<self->atk[0].curcd<<" "<<self->atk[1].curcd<<" "<<self->atk[2].curcd<<std::endl;
-            outFile<<clist.size()<<std::endl;
-            for(int i=1;i<clist.size();i++){
-                outFile<<clist[i]->id<<" "<<clist[i]->posx<<" "<<clist[i]->posy<<" "<<clist[i]->mhp<<" "
-                      <<clist[i]->hp<<" "<<clist[i]->mAtk<<std::endl;
-            }
-
-//           for(int i=0;i<TSizeX;i++){
-//                for(int j=0;j<TSizeY;j++){
-//                    if(!cmp[i][j]){
-//                        outFile<<0<<std::endl;
-//                        continue;
-//                    }
-//                    outFile<<1<<" "<<cmp[i][j]->id<<" "<<cmp[i][j]->posx<<" "<<cmp[i][j]->posy<<" "<<cmp[i][j]->mhp<<" "
-//                          <<cmp[i][j]->hp<<" "<<cmp[i][j]->mAtk<<std::endl;
-//                }
-//            }
-            outFile<<mode<<" "<<mx<<" "<<my<<std::endl;
-            outFile.close();
-            return true;
-        }
-    }else {
-        return true;//这两个原则上不会发生
-    }
-    return true;//这两个原则上不会发生
+    std::string filename=usrname;
+           std::ifstream inFile(usrname+"_saving"+std::to_string(num)+".txt",std::ios::in);
+           if(inFile.is_open()){
+               inFile.close();
+               return false;
+           } else {
+               std::ofstream outFile(usrname+"_saving1.txt",std::ios::out);
+               outFile<<lvl<<std::endl;
+               for(int i=0;i<XMX;i++){
+                   for(int j=0;j<YMX;j++){
+                       outFile<<mapp[i][j]<<' ';
+                   }
+                   outFile<<'\n';
+               }
+               for(int i=0;i<3;i++)
+               outFile<<self->atk[i].curcd<<' ';
+               outFile<<'\n';
+               outFile<<self->id<<" "<<self->posx<<" "<<self->posy<<" "<<self->mhp<<" "
+                                     <<self->hp<<" "<<self->mAtk << " " << self->SAD <<std::endl;
+               outFile<<clist.size()<<std::endl;
+               for(int i=1;i<clist.size();i++){
+                   outFile<<clist[i]->id<<" "<<clist[i]->posx<<" "<<clist[i]->posy<<" "<<clist[i]->mhp<<" "
+                         <<clist[i]->hp<<" "<<clist[i]->mAtk<< " " << clist[i]->SAD << std::endl;
+               }
+               outFile<<mode<<" "<<mx<<" "<<my<<std::endl;
+               outFile.close();
+               return true;
+           }
+       return false;
 }
-
+void MainWindow2::paintEvent(QPaintEvent *)
+{
+    QPainter painter(this);
+    QPen pen(QColor(255,0,0));
+    pen.setWidth(3);
+    pen.setStyle(Qt::CustomDashLine);
+    painter.setPen(pen);
+    painter.drawLine(QPoint(pposx,pposy),QPoint(pposx2,pposy2));
+} //使用arrow时的动画，起点射向终点的一条红线
 /* 存储格式：.txt
  * row0: lvl
  * INSERTED: mapp matrix
