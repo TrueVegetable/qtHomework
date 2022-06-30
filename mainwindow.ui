@@ -42,16 +42,16 @@
    <string>MainWindow</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">#MainWindow{border-image: url(:/new/prefix1/image1.png);}</string>
+   <string notr="true">#MainWindow{border-image: url(:/new/prefix1/mainwindow_image.png);}</string>
   </property>
   <widget class="QWidget" name="centralwidget">
    <widget class="QPushButton" name="pushButton_2">
     <property name="geometry">
      <rect>
-      <x>550</x>
-      <y>340</y>
-      <width>131</width>
-      <height>71</height>
+      <x>230</x>
+      <y>430</y>
+      <width>300</width>
+      <height>60</height>
      </rect>
     </property>
     <property name="sizePolicy">
@@ -62,8 +62,13 @@
     </property>
     <property name="font">
      <font>
+      <family>Lucida Handwriting</family>
       <pointsize>16</pointsize>
      </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">border-image:url(&quot;:/new/prefix1/button_grey.png&quot;);
+color:rgb(245, 245, 245);</string>
     </property>
     <property name="text">
      <string>Quit</string>
@@ -75,10 +80,10 @@
     </property>
     <property name="geometry">
      <rect>
-      <x>210</x>
-      <y>170</y>
-      <width>388</width>
-      <height>63</height>
+      <x>110</x>
+      <y>40</y>
+      <width>561</width>
+      <height>161</height>
      </rect>
     </property>
     <property name="sizePolicy">
@@ -89,7 +94,9 @@
     </property>
     <property name="font">
      <font>
-      <pointsize>36</pointsize>
+      <family>Lucida Handwriting</family>
+      <pointsize>48</pointsize>
+      <bold>true</bold>
      </font>
     </property>
     <property name="acceptDrops">
@@ -101,8 +108,14 @@
     <property name="autoFillBackground">
      <bool>false</bool>
     </property>
+    <property name="styleSheet">
+     <string notr="true">color:rgb(255, 255, 255);
+background-color:rgba(255, 255, 255, 0);
+border-image: url(:/new/prefix1/mainwindow_title.png);
+</string>
+    </property>
     <property name="text">
-     <string>Hit That Guy</string>
+     <string>Greed Island</string>
     </property>
     <property name="frame">
      <bool>false</bool>
@@ -120,10 +133,10 @@
    <widget class="QPushButton" name="pushButton">
     <property name="geometry">
      <rect>
-      <x>320</x>
-      <y>340</y>
-      <width>151</width>
-      <height>71</height>
+      <x>230</x>
+      <y>250</y>
+      <width>300</width>
+      <height>60</height>
      </rect>
     </property>
     <property name="sizePolicy">
@@ -134,8 +147,13 @@
     </property>
     <property name="font">
      <font>
+      <family>Lucida Handwriting</family>
       <pointsize>16</pointsize>
      </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">border-image:url(&quot;:/new/prefix1/button_blue.png&quot;);
+color:rgb(231, 249, 255)</string>
     </property>
     <property name="text">
      <string>Start</string>
@@ -144,10 +162,10 @@
    <widget class="QPushButton" name="pushButton_3">
     <property name="geometry">
      <rect>
-      <x>90</x>
+      <x>230</x>
       <y>340</y>
-      <width>141</width>
-      <height>71</height>
+      <width>300</width>
+      <height>60</height>
      </rect>
     </property>
     <property name="sizePolicy">
@@ -158,8 +176,13 @@
     </property>
     <property name="font">
      <font>
+      <family>Lucida Handwriting</family>
       <pointsize>16</pointsize>
      </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">border-image:url(&quot;:/new/prefix1/button_yellow.png&quot;);
+color:rgb(253, 255, 224);</string>
     </property>
     <property name="text">
      <string>Help</string>

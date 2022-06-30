@@ -19,6 +19,9 @@
   <property name="windowTitle">
    <string>MainWindow</string>
   </property>
+  <property name="styleSheet">
+   <string notr="true">#MainWindow1_2{border-image: url(:/new/prefix1/window1_2.png);}</string>
+  </property>
   <widget class="QWidget" name="centralwidget">
    <widget class="QPushButton" name="NGbtm">
     <property name="geometry">
@@ -28,6 +31,16 @@
       <width>121</width>
       <height>41</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Lucida Handwriting</family>
+      <pointsize>10</pointsize>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">border-image: url(:/new/prefix1/button_blue.png);
+color:rgb(255, 255, 255);</string>
     </property>
     <property name="text">
      <string>New Game</string>
@@ -42,6 +55,16 @@
       <height>41</height>
      </rect>
     </property>
+    <property name="font">
+     <font>
+      <family>Lucida Handwriting</family>
+      <pointsize>10</pointsize>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">border-image: url(:/new/prefix1/button_yellow.png);
+color:rgb(255, 255, 255);</string>
+    </property>
     <property name="text">
      <string>Read Saving1</string>
     </property>
@@ -54,6 +77,16 @@
       <width>121</width>
       <height>41</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Lucida Handwriting</family>
+      <pointsize>10</pointsize>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">border-image: url(:/new/prefix1/button_yellow.png);
+color:rgb(255, 255, 255);</string>
     </property>
     <property name="text">
      <string>Read Saving2</string>
@@ -68,6 +101,16 @@
       <height>41</height>
      </rect>
     </property>
+    <property name="font">
+     <font>
+      <family>Lucida Handwriting</family>
+      <pointsize>10</pointsize>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">border-image: url(:/new/prefix1/button_grey.png);
+color:rgb(255, 255, 255);</string>
+    </property>
     <property name="text">
      <string>Clear Saving1</string>
     </property>
@@ -81,26 +124,20 @@
       <height>41</height>
      </rect>
     </property>
+    <property name="font">
+     <font>
+      <family>Lucida Handwriting</family>
+      <pointsize>10</pointsize>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">border-image: url(:/new/prefix1/button_grey.png);
+color:rgb(255, 255, 255);</string>
+    </property>
     <property name="text">
      <string>Clear Saving2</string>
     </property>
    </widget>
-  </widget>
-  <widget class="QMenuBar" name="menubar">
-   <property name="geometry">
-    <rect>
-     <x>0</x>
-     <y>0</y>
-     <width>400</width>
-     <height>21</height>
-    </rect>
-   </property>
-   <widget class="QMenu" name="menuWelcom">
-    <property name="title">
-     <string>Welcome</string>
-    </property>
-   </widget>
-   <addaction name="menuWelcom"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
  </widget>

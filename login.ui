@@ -13,11 +13,14 @@
   <property name="windowTitle">
    <string>Dialog</string>
   </property>
+  <property name="styleSheet">
+   <string notr="true">#Login{border-image: url(:/new/prefix1/login_image.png);}</string>
+  </property>
   <widget class="QLineEdit" name="usrLineEdit">
    <property name="geometry">
     <rect>
      <x>140</x>
-     <y>100</y>
+     <y>90</y>
      <width>191</width>
      <height>21</height>
     </rect>
@@ -26,11 +29,20 @@
   <widget class="QLabel" name="label">
    <property name="geometry">
     <rect>
-     <x>70</x>
-     <y>100</y>
-     <width>61</width>
-     <height>16</height>
+     <x>60</x>
+     <y>90</y>
+     <width>71</width>
+     <height>20</height>
     </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>Lucida Handwriting</family>
+     <bold>true</bold>
+    </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">color:rgb(255, 255, 255);</string>
    </property>
    <property name="text">
     <string>Username</string>
@@ -39,11 +51,18 @@
   <widget class="QLabel" name="label_2">
    <property name="geometry">
     <rect>
-     <x>70</x>
+     <x>60</x>
      <y>160</y>
-     <width>61</width>
-     <height>16</height>
+     <width>71</width>
+     <height>20</height>
     </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>Lucida Handwriting</family>
+     <pointsize>10</pointsize>
+     <bold>true</bold>
+    </font>
    </property>
    <property name="text">
     <string>Password</string>
@@ -66,14 +85,15 @@
    <property name="geometry">
     <rect>
      <x>140</x>
-     <y>40</y>
-     <width>101</width>
-     <height>31</height>
+     <y>30</y>
+     <width>121</width>
+     <height>21</height>
     </rect>
    </property>
    <property name="font">
     <font>
-     <pointsize>14</pointsize>
+     <family>Lucida Handwriting</family>
+     <pointsize>16</pointsize>
     </font>
    </property>
    <property name="text">
@@ -89,6 +109,11 @@
      <height>24</height>
     </rect>
    </property>
+   <property name="font">
+    <font>
+     <family>Lucida Handwriting</family>
+    </font>
+   </property>
    <property name="text">
     <string>Login</string>
    </property>
@@ -102,6 +127,11 @@
      <height>24</height>
     </rect>
    </property>
+   <property name="font">
+    <font>
+     <family>Lucida Handwriting</family>
+    </font>
+   </property>
    <property name="text">
     <string>Cancel</string>
    </property>
@@ -114,6 +144,11 @@
      <width>101</width>
      <height>24</height>
     </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>Lucida Handwriting</family>
+    </font>
    </property>
    <property name="text">
     <string>Register</string>

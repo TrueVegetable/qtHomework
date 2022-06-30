@@ -76,7 +76,7 @@ void Login::on_regisButton_clicked()
 {
     Registerpage * gwr=new Registerpage;
     gwr->show();
-    delete this;
+    //delete this;
 }
 
 

@@ -16,9 +16,10 @@ MainWindow::MainWindow(QWidget *parent)
     connect(this->ui->pushButton_2,&QPushButton::released,this,&MainWindow::Quit); //两个button，start和quit
     connect(this->ui->pushButton_3,&QPushButton::released,this,&MainWindow::ShowHelp);
 
-    ui->pushButton->setIcon(QIcon(":/new/prefix1/people.png"));
-    ui->pushButton_2->setIcon(QIcon(":/new/prefix1/people.png"));
-    ui->pushButton_3->setIcon(QIcon(":/new/prefix1/people.png"));//button的图标
+    //ui->pushButton->setIcon(QIcon(":/new/prefix1/button_blue.png"));
+    //ui->pushButton->setIconSize(QSize(300, 60));
+    //ui->pushButton_2->setIcon(QIcon(":/new/prefix1/people.png"));
+    //ui->pushButton_3->setIcon(QIcon(":/new/prefix1/people.png"));//button的图标
 
     setWindowTitle("Main Menu");
 }

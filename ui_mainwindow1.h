@@ -6,11 +6,11 @@
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
 ********************************************************************************/
 
-#ifndef UI_MAINWINDOW1_2_H
-#define UI_MAINWINDOW1_2_H
+#ifndef UI_MAINWINDOW1_H
+#define UI_MAINWINDOW1_H
 
 #include <QtCore/QVariant>
-#include <QtGui/QAction>
+#include <QtWidgets/QAction>
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QButtonGroup>
 #include <QtWidgets/QHeaderView>
@@ -102,4 +102,4 @@ namespace Ui {
 
 QT_END_NAMESPACE
 
-#endif // UI_MAINWINDOW1_2_H
+#endif // UI_MAINWINDOW1_H

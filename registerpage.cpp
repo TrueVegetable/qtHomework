@@ -81,6 +81,6 @@ void Registerpage::on_pushButton_clicked()
 
 void Registerpage::on_pushButton_2_clicked()
 {
-    exit(0);
+    delete this;
 }
 
