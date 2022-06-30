@@ -11,6 +11,8 @@ CONFIG += c++17
 SOURCES += \
     CCreature.cpp \
     hint.cpp \
+    introduction.cpp \
+    introduction2.cpp \
     login.cpp \
     main.cpp \
     mainwindow.cpp \
@@ -24,6 +26,8 @@ SOURCES += \
 HEADERS += \
     CCreature.h \
     hint.h \
+    introduction.h \
+    introduction2.h \
     login.h \
     mainwindow.h \
     mainwindow1_2.h \
@@ -32,6 +36,8 @@ HEADERS += \
     registerpage.h \
     save_request.h \
     tmpwindow.h \
+    ui_introduction.h \
+    ui_introduction2.h \
     ui_login.h \
     ui_mainwindow.h \
     ui_mainwindow2.h \
@@ -42,6 +48,8 @@ HEADERS += \
 
 FORMS += \
     hint.ui \
+    introduction.ui \
+    introduction2.ui \
     login.ui \
     mainwindow.ui \
     mainwindow1_2.ui \

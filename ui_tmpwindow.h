@@ -37,26 +37,46 @@ public:
     {
         if (TmpWindow->objectName().isEmpty())
             TmpWindow->setObjectName(QStringLiteral("TmpWindow"));
-        TmpWindow->resize(800, 600);
-        TmpWindow->setStyleSheet(QStringLiteral("#TmpWindow{border-image: url(:/new/prefix1/image4.png);}"));
+        TmpWindow->resize(700, 600);
+        TmpWindow->setStyleSheet(QStringLiteral("#TmpWindow{border-image: url(:/new/prefix1/tmpwindow.png);}"));
         centralwidget = new QWidget(TmpWindow);
         centralwidget->setObjectName(QStringLiteral("centralwidget"));
         pushButton = new QPushButton(centralwidget);
         pushButton->setObjectName(QStringLiteral("pushButton"));
-        pushButton->setGeometry(QRect(180, 180, 131, 61));
+        pushButton->setGeometry(QRect(200, 100, 300, 60));
+        QFont font;
+        font.setFamily(QStringLiteral("Lucida Handwriting"));
+        font.setPointSize(16);
+        pushButton->setFont(font);
+        pushButton->setStyleSheet(QLatin1String("color:rgb(255, 255, 255);\n"
+"border-image: url(:/new/prefix1/button_yellow.png);\n"
+"\n"
+""));
         pushButton_2 = new QPushButton(centralwidget);
         pushButton_2->setObjectName(QStringLiteral("pushButton_2"));
-        pushButton_2->setGeometry(QRect(370, 180, 141, 61));
+        pushButton_2->setGeometry(QRect(200, 180, 300, 60));
+        pushButton_2->setFont(font);
+        pushButton_2->setStyleSheet(QLatin1String("color:rgb(255, 255, 255);\n"
+"border-image: url(:/new/prefix1/button_grey.png);\n"
+""));
         pushButton_3 = new QPushButton(centralwidget);
         pushButton_3->setObjectName(QStringLiteral("pushButton_3"));
-        pushButton_3->setGeometry(QRect(180, 280, 141, 61));
+        pushButton_3->setGeometry(QRect(200, 260, 300, 60));
+        pushButton_3->setFont(font);
+        pushButton_3->setStyleSheet(QLatin1String("color:rgb(255, 255, 255);\n"
+"border-image: url(:/new/prefix1/button_blue.png);\n"
+""));
         pushButton_4 = new QPushButton(centralwidget);
         pushButton_4->setObjectName(QStringLiteral("pushButton_4"));
-        pushButton_4->setGeometry(QRect(370, 280, 141, 61));
+        pushButton_4->setGeometry(QRect(200, 340, 300, 60));
+        pushButton_4->setFont(font);
+        pushButton_4->setStyleSheet(QLatin1String("color:rgb(255, 255, 255);\n"
+"border-image: url(:/new/prefix1/button_blue.png);\n"
+""));
         TmpWindow->setCentralWidget(centralwidget);
         menubar = new QMenuBar(TmpWindow);
         menubar->setObjectName(QStringLiteral("menubar"));
-        menubar->setGeometry(QRect(0, 0, 800, 21));
+        menubar->setGeometry(QRect(0, 0, 700, 21));
         TmpWindow->setMenuBar(menubar);
         statusbar = new QStatusBar(TmpWindow);
         statusbar->setObjectName(QStringLiteral("statusbar"));

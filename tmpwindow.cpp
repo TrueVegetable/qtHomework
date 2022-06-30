@@ -71,9 +71,12 @@ void TmpWindow::re_save_quit(int num){
     }
     std::cout<<"0000000"<<std::endl;
     if(std::remove(s1.c_str())==0 && now->save_archive(num)){
-        QMessageBox::warning(this, tr("覆盖成功！"),
-                    tr("存档 2 已覆盖为新存档！"),
-                    QMessageBox::Yes);
+        if(num==1)QMessageBox::warning(this, tr("覆盖成功！"),
+                                tr("存档 1 已覆盖为新存档！"),
+                                QMessageBox::Yes);
+        else QMessageBox::warning(this, tr("覆盖成功！"),
+                                  tr("存档 2 已覆盖为新存档！"),
+                                  QMessageBox::Yes);
     }else{ //原则上不会发生，但双保险
         QMessageBox::warning(this, tr("覆盖失败！"),
                     tr("存档失败！"),

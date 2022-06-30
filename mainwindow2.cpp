@@ -21,6 +21,9 @@
 #include <QFile>
 #include <fstream>
 
+#include "introduction.h"
+#include "introduction2.h"
+
 //void MainWindow2::paintEvent(QPaintEvent *)
 //{
 //    QPainter painter(this);
@@ -65,7 +68,7 @@ MainWindow2::MainWindow2(std::string usrname,int level,int read_mode,QWidget *pa
         //展示图片
         showmapp();
         //地图生成完毕
-        CCreature * u=new CCreature(0,0,0,10+lvl/2,4+lvl/2,ui->centralwidget,":/new/prefix1/me.png",0); //自己，图源网络
+        CCreature * u=new CCreature(0,0,0,10+lvl/2,4+lvl/2,ui->centralwidget,":/new/prefix1/kiluya"+std::to_string((lvl+1)/2)+".png",0); //自己，图源网络
         u->atk.push_back(Attack(0,3+(lvl+1)/3,std::min(5,3+(lvl+2)/5),"Shoot",1));
         u->atk.push_back(Attack(1,2+(lvl+2)/3,std::min(6,4+lvl/5),"Bomb",3));
         u->atk.push_back(Attack(2,3+lvl/3,std::min(7,5+lvl/4),"Arrow",2)); //赋予武器
@@ -90,26 +93,42 @@ MainWindow2::MainWindow2(std::string usrname,int level,int read_mode,QWidget *pa
 }
 
 void MainWindow2::drawmapp(){//绘制地图mapp
-    if(lvl%2==1){ //奇数关卡随机生成
-        for(int i=0;i<lvl*9;i++){
+    if(lvl==1||lvl==3){ //1/3关卡随机生成
+        for(int i=0;i<(lvl+1)*9;i++){
             int px=Rand()%XMX,py=Rand()%YMX;
-            while(cmp[px][py]||mapp[px][py]>0)px=Rand()%XMX,py=Rand()%YMX; //随机生成敌人位置
-            mapp[px][py] = i/(3*lvl)+1;
+            while(cmp[px][py]||mapp[px][py]>0||(px==0&&py==0))px=Rand()%XMX,py=Rand()%YMX; //随机生成敌人位置
+            mapp[px][py] = i/(3*(lvl+1))+1;
         }
     }else if(lvl==2){//第二关：重峦叠嶂
-        for(int i=2;i<XMX-2;i++){
-            for(int j=2;j<YMX-2;j++){
+        for(int i=1;i<XMX-1;i++){
+            for(int j=1;j<YMX-1;j++){
                 if(i%2==j%2){
                     mapp[i][j] = 2;
                 }
             }
         }
     }else if(lvl==4){//第四关：生死火焰山
-        for(int i=2;i<XMX-2;i++){
+        for(int i=1;i<XMX-1;i++){
             if(i%2==0){
-                for(int j=2;j<YMX-2;j++){
+                for(int j=1;j<YMX-1;j++){
                      mapp[i][j] = 3;
                 }
+            }
+        }
+    }else if(lvl==5){//第五关：璀璨星球
+        for(int i=2;i<6;i++){
+            for(int j=2;j<YMX-2;j++){
+                mapp[i][j]=1;
+            }
+        }
+        for(int i=8;i<12;i++){
+            for(int j=2;j<YMX-2;j++){
+                mapp[i][j]=3;
+            }
+        }
+        for(int i=14;i<18;i++){
+            for(int j=2;j<YMX-2;j++){
+                mapp[i][j]=2;
             }
         }
     }else if(lvl==6){//第六关：宇宙尽头
@@ -215,6 +234,10 @@ void MainWindow2::Back(){
 void MainWindow2::levelUp(){
     MainWindow2 * w=new MainWindow2(this->usrname,lvl+1);
     w->show();
+
+    if (lvl == 2) pre_intro();
+    if (lvl == 4) next_intro();
+
     delete this;
 }
 bool MainWindow2::checkDie(int nx,int ny){
@@ -298,8 +321,6 @@ void MainWindow2::Upd_E(){
             if(clist[i]->Range_Ar(clist[0]->posx,clist[0]->posy)){
                 clist[i]->Attack(clist[0]);
                 clist[i]->use_time--;
-                pposx = clist[i]->posx; pposy = clist[i]->posy;
-                update(); //Archer攻击动画
                 continue;
                 }
             } //Archer，若检测到me在对角线上（以自身为中心长度为1的方形对角线）且武器还有使用次数，则攻击，否则移动
@@ -344,9 +365,18 @@ bool MainWindow2::Upd_All(){
     UpdWpList();
     for(int i=0;i<clist.size();i++)clist[i]->upd();
     if(clist.size()==1){//敌人全部死亡，成功
-        QMessageBox::warning(this, tr("Congratulations! You win. Level up!"), tr("Congratulations! You win. Level up!"));
-        levelUp();
-        return true;
+        if (lvl <= 5)
+        {
+            QMessageBox::warning(this, tr("Congratulations! You won. Level up!"), tr("Congratulations! You won. Level up!"));
+            levelUp();
+            return true;
+        }
+        else
+        {
+            QMessageBox::warning(this, tr("Congratulations! You have passed all the challenges. Click OK to go back to the main menu."), tr("Congratulations! You have passed all the challenges. Click OK to go back to the main menu."));
+            Back();
+            return true;
+        }
     }
     if(self->hp<=0){//玩家血量<=0，失败
         QMessageBox::warning( this, tr("I am sorry, you fail."), tr("I am sorry, you fail."));
@@ -518,15 +548,29 @@ bool MainWindow2::save_archive(int num){
            }
        return false;
 }
-void MainWindow2::paintEvent(QPaintEvent *)
+
+void MainWindow2::pre_intro()
 {
-    QPainter painter(this);
-    QPen pen(QColor(255,0,0));
-    pen.setWidth(3);
-    pen.setStyle(Qt::CustomDashLine);
-    painter.setPen(pen);
-    painter.drawLine(QPoint(pposx,pposy),QPoint(pposx2,pposy2));
-} //使用arrow时的动画，起点射向终点的一条红线
+    Introduction *gw = new Introduction;
+    gw->show();
+}
+
+void MainWindow2::next_intro()
+{
+    Introduction2 *gw = new Introduction2;
+    gw->show();
+}
+
+
+//void MainWindow2::paintEvent(QPaintEvent *)
+//{
+//    QPainter painter(this);
+//    QPen pen(QColor(255,0,0));
+//    pen.setWidth(3);
+//    pen.setStyle(Qt::CustomDashLine);
+//    painter.setPen(pen);
+//    painter.drawLine(QPoint(pposx,pposy),QPoint(pposx2,pposy2));
+//} //使用arrow时的动画，起点射向终点的一条红线
 /* 存储格式：.txt
  * row0: lvl
  * INSERTED: mapp matrix

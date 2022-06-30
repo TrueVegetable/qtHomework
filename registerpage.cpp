@@ -4,6 +4,8 @@
 #include<QMessageBox>
 #include<iostream>
 #include "login.h"
+#include "mainwindow.h"
+
 
 Registerpage::Registerpage(QWidget *parent) :
     QDialog(parent),
@@ -81,6 +83,8 @@ void Registerpage::on_pushButton_clicked()
 
 void Registerpage::on_pushButton_2_clicked()
 {
-    exit(0);
+    MainWindow * gw=new MainWindow;
+    gw->show();
+    delete this;
 }
 

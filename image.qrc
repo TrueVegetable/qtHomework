@@ -1,10 +1,6 @@
 <RCC>
     <qresource prefix="/new/prefix1">
-        <file>image1.png</file>
-        <file>image2.png</file>
         <file>Enemy1.png</file>
-        <file>image3.png</file>
-        <file>image4.png</file>
         <file>button_blue.png</file>
         <file>button_grey.png</file>
         <file>button_yellow.png</file>
@@ -12,16 +8,11 @@
         <file>mainwindow_title.png</file>
         <file>window1_2.png</file>
         <file>login_image.png</file>
-        <file>me.png</file>
-        <file>people.png</file>
-        <file>people2.png</file>
         <file>question.png</file>
         <file>exit.png</file>
         <file>pause.png</file>
         <file>Enemy2.png</file>
-        <file>me2.png</file>
         <file>Enemy3.png</file>
-        <file>me3.png</file>
         <file>kiluya1.png</file>
         <file>montain.png</file>
         <file>heidong.png</file>
@@ -29,5 +20,10 @@
         <file>blackhole.png</file>
         <file>hint_image.png</file>
         <file>mainwindow2.png</file>
+        <file>intro_image.png</file>
+        <file>me.png</file>
+        <file>kiluya2.png</file>
+        <file>kiluya3.png</file>
+        <file>tmpwindow.png</file>
     </qresource>
 </RCC>
