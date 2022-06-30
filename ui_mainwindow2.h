@@ -38,7 +38,7 @@ public:
         MainWindow2->resize(1366, 768);
         MainWindow2->setMinimumSize(QSize(1366, 768));
         MainWindow2->setMaximumSize(QSize(1366, 768));
-        MainWindow2->setStyleSheet(QString::fromUtf8("#MainWindow2{border-image: url(:/new/prefix1/image3.png);}"));
+        MainWindow2->setStyleSheet(QString::fromUtf8("#MainWindow2{border-image: url(:/new/prefix1/mainwindow2.png);}"));
         MainWindow2->setMouseTracking(true);
         actionPause = new QAction(MainWindow2);
         actionPause->setObjectName(QString::fromUtf8("actionPause"));
